@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PLUGINS, formatPrice, inShop } from "@/lib/plugins";
+import { PLUGINS, formatPrice, inShop, isFreeInstall } from "@/lib/plugins";
 import { HOLO_BG } from "@/lib/holo";
 import PluginMenu from "@/components/PluginMenu";
 
@@ -64,11 +64,11 @@ export function PriceLabel({ plugin, className = "" }) {
 }
 
 // Label status di samping harga (hanya plugin berbayar yang punya status).
-export function StatusChip({ owned, pending }) {
+export function StatusChip({ owned, pending, free = false }) {
   if (!owned && !pending) return null;
   return (
     <span className="rounded-full border border-base-line px-2 py-0.5 font-body text-[11px] font-semibold text-ink-muted">
-      {owned ? "Dimiliki" : "Menunggu token"}
+      {owned ? (free ? "Ter-install" : "Dimiliki") : "Menunggu token"}
     </span>
   );
 }
@@ -145,7 +145,7 @@ export default function PluginSection({ signedIn = false, owned = [], pending = 
                     <Link href={"/plugin/" + p.id} className="hover:opacity-70 transition-opacity">{p.name}</Link>
                   </h3>
                   <PriceLabel plugin={p} />
-                  <StatusChip owned={owned.includes(p.id)} pending={pending.includes(p.id)} />
+                  <StatusChip owned={owned.includes(p.id)} pending={pending.includes(p.id)} free={isFreeInstall(p)} />
                   <PluginMenu
                     plugin={p}
                     signedIn={signedIn}

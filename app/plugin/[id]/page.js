@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import PluginMenu from "@/components/PluginMenu";
 import { Preview, PriceLabel, StatusChip } from "@/components/PluginSection";
 import { navItems, mobileGroups } from "@/lib/nav";
-import { PLUGIN_BY_ID } from "@/lib/plugins";
+import { PLUGIN_BY_ID, isFreeInstall } from "@/lib/plugins";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { ownedPluginIds, pendingPluginIds } from "@/lib/plugin-access";
 
@@ -60,7 +60,7 @@ export default async function Page({ params }) {
         <div className="mt-6 flex items-center gap-2.5">
           <h1 className="font-display text-3xl font-extrabold leading-tight text-ink sm:text-4xl">{plugin.name}</h1>
           <PriceLabel plugin={plugin} className="!text-base" />
-          <StatusChip owned={isOwned} pending={isPending} />
+          <StatusChip owned={isOwned} pending={isPending} free={isFreeInstall(plugin)} />
           <PluginMenu plugin={plugin} signedIn={signedIn} owned={isOwned} pending={isPending} />
         </div>
         <p className="mt-4 font-body text-base leading-relaxed text-ink-muted">{plugin.desc}</p>

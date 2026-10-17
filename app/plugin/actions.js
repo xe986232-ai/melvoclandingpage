@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { orderPlugin, redeemPluginToken } from "@/lib/plugin-access";
+import { installFreePlugin, orderPlugin, redeemPluginToken } from "@/lib/plugin-access";
 
 async function currentUser() {
   const supabase = createServerSupabaseClient();
@@ -20,6 +20,17 @@ export async function buyPlugin(pluginId) {
   const res = await orderPlugin(user.id, String(pluginId ?? ""));
   if (res.error) return { error: res.error };
   revalidatePath("/plugin", "layout");
+  return { ok: true };
+}
+
+// Install Plugin (plugin gratis seperti VocalF): aktif di akun ini dan langsung muncul di DAW.
+export async function installPlugin(pluginId) {
+  const user = await currentUser();
+  if (!user) return { error: "Masuk dulu untuk meng-install plugin.", needLogin: true };
+  const res = await installFreePlugin(user.id, String(pluginId ?? ""));
+  if (res.error) return { error: res.error };
+  revalidatePath("/plugin", "layout");
+  revalidatePath("/akun");
   return { ok: true };
 }
 

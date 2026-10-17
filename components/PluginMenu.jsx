@@ -7,8 +7,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MoreVertical } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { buyPlugin, redeemPlugin } from "@/app/plugin/actions";
-import { formatPrice } from "@/lib/plugins";
+import { buyPlugin, installPlugin, redeemPlugin } from "@/app/plugin/actions";
+import { formatPrice, isFreeInstall } from "@/lib/plugins";
 import { FULL_APP_URL } from "@/lib/melvoc";
 
 const item =
@@ -19,15 +19,19 @@ const ghost =
   "inline-flex h-11 items-center justify-center rounded-full border border-base-line px-6 text-sm font-semibold text-ink transition-colors hover:bg-black/[0.05] disabled:opacity-60 dark:hover:bg-white/[0.08]";
 
 // Titik tiga di kanan nama plugin.
-//   Gratis   : Share plugin, Install Plugin
+//   Bawaan   : Share plugin, Install Plugin (buka DAW)
+//   Gratis-install (mis. VocalF): Share plugin, Install Plugin (aktif di akun, tanpa token)
 //   Berbayar : Share plugin, Buy plugin -> (setelah pesanan disetujui) Tebus Plugin
 export default function PluginMenu({ plugin, signedIn = false, owned = false, pending = false }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState(null); // 'buy' | 'redeem'
   const [copied, setCopied] = useState(false);
+  const [busy, startInstall] = useTransition();
+  const [err, setErr] = useState("");
   const wrap = useRef(null);
-  const paid = !plugin.default;
+  const free = isFreeInstall(plugin);   // gratis tapi harus di-install dulu (VocalF)
+  const paid = !plugin.default && !free;
   const next = encodeURIComponent("/plugin/" + plugin.id);
 
   const close = useCallback(() => setOpen(false), []);
@@ -65,6 +69,17 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
     setTimeout(() => { setCopied(false); setOpen(false); }, 1400);
   }
 
+  function install() {
+    setErr("");
+    if (!signedIn) { setOpen(false); router.push("/masuk?next=" + next); return; }
+    startInstall(async () => {
+      const res = await installPlugin(plugin.id);
+      if (res?.ok) { setOpen(false); router.refresh(); return; }
+      if (res?.needLogin) { setOpen(false); return router.push("/masuk?next=" + next); }
+      setErr(res?.error || "Gagal meng-install plugin.");
+    });
+  }
+
   function pick(which) {
     setOpen(false);
     if (!signedIn) { router.push("/masuk?next=" + next); return; }
@@ -98,7 +113,18 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
               {copied ? "Link disalin" : "Share plugin"}
             </button>
 
-            {!paid && (
+            {free && owned && (
+              <span role="menuitem" aria-disabled="true" className={item + " cursor-default text-ink-muted hover:bg-transparent dark:hover:bg-transparent"}>
+                Sudah ter-install
+              </span>
+            )}
+            {free && !owned && (
+              <button type="button" role="menuitem" className={item} onClick={install} disabled={busy}>
+                {busy ? "Meng-install..." : "Install Plugin"}
+              </button>
+            )}
+            {free && err && <p role="alert" className="px-3 py-1 font-body text-xs text-rose-500">{err}</p>}
+            {!paid && !free && (
               <Link role="menuitem" href={FULL_APP_URL || "/#download"} className={item} onClick={() => setOpen(false)}>
                 Install Plugin
               </Link>
