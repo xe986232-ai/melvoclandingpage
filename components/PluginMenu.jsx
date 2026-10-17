@@ -7,7 +7,7 @@ import { MoreVertical } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { buyPlugin, installPlugin, redeemPlugin } from "@/app/plugin/actions";
-import { formatPrice, isFreeInstall } from "@/lib/plugins";
+import { buildPluginOrderUrl, formatPrice, isFreeInstall } from "@/lib/plugins";
 import { FULL_APP_URL } from "@/lib/melvoc";
 
 const item =
@@ -24,7 +24,7 @@ const ghost =
 export default function PluginMenu({ plugin, signedIn = false, owned = false, pending = false }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [dialog, setDialog] = useState(null); // 'buy' | 'redeem'
+  const [dialog, setDialog] = useState(null); // 'buy' | 'ordered' | 'redeem'
   const [copied, setCopied] = useState(false);
   const [busy, startInstall] = useTransition();
   const [err, setErr] = useState("");
@@ -148,16 +148,29 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
               </button>
             )}
             {paid && !owned && pending && (
-              <button type="button" role="menuitem" className={item} onClick={() => pick("redeem")}>
-                Tebus Plugin
-              </button>
+              <>
+                <button type="button" role="menuitem" className={item} onClick={() => pick("redeem")}>
+                  Tebus Plugin
+                </button>
+                <a
+                  role="menuitem"
+                  className={item}
+                  href={buildPluginOrderUrl(plugin)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                >
+                  Chat admin (WhatsApp)
+                </a>
+              </>
             )}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {paid && <BuyDialog plugin={plugin} open={dialog === "buy"} onClose={() => setDialog(null)} onDone={() => { setDialog("redeem-hint"); router.refresh(); }} />}
-      {paid && <RedeemDialog plugin={plugin} open={dialog === "redeem" || dialog === "redeem-hint"} hint={dialog === "redeem-hint"} onClose={() => setDialog(null)} onDone={() => router.refresh()} />}
+      {paid && <BuyDialog plugin={plugin} open={dialog === "buy"} onClose={() => setDialog(null)} onDone={() => { setDialog("ordered"); router.refresh(); }} />}
+      {paid && <OrderedDialog plugin={plugin} open={dialog === "ordered"} onClose={() => setDialog(null)} onRedeem={() => setDialog("redeem")} />}
+      {paid && <RedeemDialog plugin={plugin} open={dialog === "redeem"} hint={false} onClose={() => setDialog(null)} onDone={() => router.refresh()} />}
     </div>
   );
 }
@@ -187,7 +200,8 @@ function BuyDialog({ plugin, open, onClose, onDone }) {
       <p className="mt-4 font-body text-sm leading-relaxed text-ink-muted">{plugin.desc}</p>
       <ul className="mt-4 space-y-1.5 border-t border-base-line pt-4 font-body text-sm text-ink-muted">
         <li>Sekali bayar, dipakai selamanya di akun ini.</li>
-        <li>Setelah kamu setuju, pesanan dibuat dan admin memberikan token plugin setelah pembayaran beres.</li>
+        <li>Setelah kamu setuju, pesanan dibuat dan kamu diarahkan ke WhatsApp admin untuk dibantu cara pembeliannya.</li>
+        <li>Admin memberikan token plugin setelah pembayaran beres.</li>
         <li>Masukkan token itu lewat menu <span className="font-semibold text-ink">Tebus Plugin</span> untuk mengaktifkan plugin.</li>
       </ul>
       {error && <p role="alert" className="mt-3 font-body text-sm text-rose-500">{error}</p>}
@@ -196,6 +210,30 @@ function BuyDialog({ plugin, open, onClose, onDone }) {
         <button type="button" onClick={agree} disabled={busy} data-autofocus className={primary}>
           {busy ? "Memproses..." : "Setuju"}
         </button>
+      </div>
+    </Modal>
+  );
+}
+
+// Setelah pesanan dibuat: ajak pembeli mengirim pesan ke admin (tombol = klik pengguna, jadi tidak diblokir popup blocker).
+function OrderedDialog({ plugin, open, onClose, onRedeem }) {
+  return (
+    <Modal open={open} onClose={onClose} label={"Pesanan " + plugin.name}>
+      <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted">Pesanan dibuat</p>
+      <h2 className="mt-2 font-display text-2xl font-extrabold text-ink">{plugin.name}</h2>
+      <p className="mt-3 font-body text-sm leading-relaxed text-ink-muted">
+        Pesananmu sudah tercatat. Kirim pesan ke admin lewat WhatsApp supaya kamu dibantu cara pembeliannya. Pesannya sudah terisi otomatis, tinggal kirim.
+      </p>
+      <ul className="mt-4 space-y-1.5 border-t border-base-line pt-4 font-body text-sm text-ink-muted">
+        <li>Admin memberikan token plugin setelah pembayaran beres.</li>
+        <li>Masukkan token itu lewat menu <span className="font-semibold text-ink">Tebus Plugin</span>.</li>
+      </ul>
+      <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <button type="button" onClick={onClose} className={ghost}>Nanti</button>
+        <button type="button" onClick={onRedeem} className={ghost}>Sudah punya token</button>
+        <a href={buildPluginOrderUrl(plugin)} target="_blank" rel="noopener noreferrer" data-autofocus onClick={onClose} className={primary}>
+          Kirim pesan ke WhatsApp
+        </a>
       </div>
     </Modal>
   );
