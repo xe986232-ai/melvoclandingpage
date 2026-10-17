@@ -7,11 +7,11 @@ import { APP_NAME, APP_ICON } from "@/lib/melvoc";
 // section Pricelist (components/PricingSection.jsx).
 export default function AppHeader() {
   return (
-    <header className="relative overflow-hidden px-5 py-16 sm:px-10 sm:py-24">
+    <header className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-5 pb-10 pt-24 sm:px-10">
       {/* cahaya lembut di belakang icon */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl dark:opacity-30 sm:h-[480px] sm:w-[480px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl dark:opacity-30 sm:h-[620px] sm:w-[620px]"
         style={{
           background:
             "radial-gradient(circle, rgba(168,85,247,0.55) 0%, rgba(217,70,239,0.25) 45%, rgba(0,0,0,0) 70%)",
