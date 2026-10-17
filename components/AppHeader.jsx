@@ -12,8 +12,15 @@ export default function AppHeader() {
   return (
     <header
       className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-between overflow-hidden px-5 pb-6 pt-8 sm:px-10 sm:pb-8 sm:pt-12"
-      style={HOLO_BG}
+      style={{ backgroundColor: HOLO_BG.backgroundColor }}
     >
+      {/* background holografik bergerak tipis */}
+      <div
+        aria-hidden
+        className="holo-drift pointer-events-none absolute inset-0"
+        style={{ backgroundImage: HOLO_BG.backgroundImage }}
+      />
+
       {/* atas */}
       <motion.p
         initial={{ opacity: 0, y: -8 }}
