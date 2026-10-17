@@ -9,7 +9,7 @@ const fadeUp = {
 
 export default function AboutSection() {
   return (
-    <section id="tentang" className="relative px-6 sm:px-10 py-28 sm:py-36">
+    <section id="tentang" className="relative px-6 sm:px-10 pt-12 pb-24 sm:pt-16 sm:pb-32">
       <div className="max-w-3xl mx-auto text-center space-y-6">
         <motion.div
           initial="hidden"
