@@ -19,6 +19,7 @@ export const revalidate = 60;
 const navItems = [
   { name: "Tentang", link: "#tentang" },
   { name: "Divisi", link: "#divisi" },
+  { name: "Download", link: "#download" },
   { name: "Ketentuan", link: "/ketentuan" },
   { name: "Privasi", link: "/privasi" },
 ];
@@ -31,6 +32,7 @@ const mobileGroups = [
       { name: "Tentang", link: "#tentang" },
       { name: "Divisi", link: "#divisi" },
       { name: "Karya", link: "#karya" },
+      { name: "Download", link: "#download" },
     ],
   },
   {

@@ -6,5 +6,9 @@ import PortfolioHero from "./ui/portfolio-hero";
 // yang sudah tampil di atasnya; lihat catatan di app/page.js kalau mau
 // menyembunyikan salah satunya supaya nggak dobel.
 export default function Hero() {
-  return <PortfolioHero />;
+  return <PortfolioHero
+      nameTop="MELVOC"
+      nameBottom="VOCAL"
+      tagline="DAW untuk olah vocal & mixing vocal, langsung dari HP."
+    />;
 }

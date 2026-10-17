@@ -70,7 +70,7 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
         <a href="#top" className="flex items-center gap-2.5">
   <LogoMark styleId={logoStyleId} shape={logoShapeId} size={34} className="shrink-0" />
   <span className="font-body font-semibold text-ink text-xs whitespace-nowrap">
-    Sopan Team
+    Melvoc
   </span>
 </a>
         </div>

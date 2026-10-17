@@ -364,7 +364,7 @@ export default function CreatorAssetsPage() {
             Motion buat komunitas.
           </p>
           <div className="flex flex-wrap gap-3 justify-center mt-6">
-            <Link href="/#gabung">
+            <Link href="/#download">
               <Button className="rounded-full px-6 py-2.5 gap-1.5">
                 <Type size={14} />
                 Gabung Divisi Creator

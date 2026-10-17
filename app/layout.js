@@ -31,11 +31,11 @@ const accent = Space_Grotesk({
 export const metadata = {
   metadataBase: new URL("https://sopan.vercel.app"),
   title: {
-    default: "SOPAN TEAM",
-    template: "%s | SOPAN TEAM",
+    default: "Melvoc — DAW Vocal",
+    template: "%s | Melvoc",
   },
   description:
-    "SOPAN TEAM — komunitas kreator dengan tiga divisi: Remix, Creator, dan Leadis. Tempat berkumpulnya kreator remix, video editor, dan kreator konten perempuan yang mau berkembang bareng.",
+    "Melvoc — DAW untuk olah vocal dan mixing vocal. Tersedia versi Demo dan Full Version.",
   keywords: [
     "SOPAN TEAM",
     "komunitas kreator",

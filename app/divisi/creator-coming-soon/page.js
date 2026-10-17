@@ -85,7 +85,7 @@ export default function CreatorComingSoonPage() {
               </span>
             </Link>
             <Link
-              href="/#gabung"
+              href="/#download"
               className="rounded-full px-7 py-3 text-sm font-medium text-white border border-white/15 hover:bg-white/5 transition-colors"
             >
               Gabung Divisi Creator

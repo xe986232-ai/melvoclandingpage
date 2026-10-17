@@ -18,7 +18,7 @@ export default function AboutSection() {
           variants={fadeUp}
         >
           <span className="font-body font-semibold text-sm tracking-[0.3em] uppercase text-ink-muted">
-            Tentang Kami
+            Tentang Melvoc
           </span>
         </motion.div>
 
@@ -30,14 +30,10 @@ export default function AboutSection() {
           className="space-y-6"
         >
           <p className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl leading-snug text-ink">
-            SOPAN TEAM lahir dari satu keyakinan sederhana: karya yang bagus
-            nggak harus lahir dari satu skill aja.
+            Melvoc adalah DAW khusus vocal: tempat kamu merekam, mengedit, dan mixing suara tanpa ribet.
           </p>
           <p className="font-body font-normal text-ink-muted text-lg leading-relaxed">
-            SOPAN TEAM adalah wadah buat kamu yang jago meremix suara, jago
-            menyulap footage jadi cerita lewat editing, atau jago tampil di
-            depan kamera. Tiga divisi, satu komunitas — tempat kreator saling
-            kenal, berkembang bareng, dan dukung karya satu sama lain.
+            Tersedia versi Demo untuk mencoba dan versi Full untuk semua fitur dan plugin. Download APK-nya di bawah, pasang, lalu mulai olah vocalmu.
           </p>
         </motion.div>
       </div>

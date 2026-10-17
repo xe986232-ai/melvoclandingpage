@@ -1,16 +1,36 @@
+// ISI: link APK (Google Drive / MediaFire / GitHub Releases), harga, dan kontak.
+const DEMO_APK_URL = "";
+const FULL_APK_URL = "";
+const FULL_PRICE = "ISI: Rp 00.000";
+
 export default function Footer() {
   return (
     <footer
-      id="gabung"
+      id="download"
       className="relative px-6 sm:px-10 py-20 border-t border-black/10 dark:border-white/10"
     >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10">
         <div>
-          <h3 className="font-display font-extrabold text-3xl text-ink">Mau gabung?</h3>
+          <h3 className="font-display font-extrabold text-3xl text-ink">Download Melvoc</h3>
           <p className="font-body font-normal text-ink-muted mt-3 max-w-sm">
-            Kami selalu buka ruang buat orang yang serius mau berkarya di
-            Remix, Creator, atau Leadis. Daftar sekarang dan ceritain karya kamu.
+            Coba dulu versi Demo, atau langsung ambil Full Version ({FULL_PRICE}).
           </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {[["Download Full", FULL_APK_URL, true], ["Download Demo", DEMO_APK_URL, false]].map(([label, url, primary]) =>
+              url ? (
+                <a key={label} href={url} target="_blank" rel="noopener noreferrer"
+                  className={primary
+                    ? "inline-block px-6 py-3 rounded-full bg-ink-solid text-white dark:bg-white dark:text-ink-solid text-sm font-medium hover:opacity-90 transition-opacity"
+                    : "inline-block px-6 py-3 rounded-full border border-black/15 dark:border-white/20 text-ink text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors"}>
+                  {label}
+                </a>
+              ) : (
+                <span key={label} aria-disabled="true" className="inline-block px-6 py-3 rounded-full bg-black/10 dark:bg-white/10 text-ink-muted text-sm font-medium cursor-not-allowed select-none">
+                  {label} · Segera hadir
+                </span>
+              )
+            )}
+          </div>
         </div>
 
         <div className="flex gap-12">
@@ -50,7 +70,7 @@ export default function Footer() {
       </div>
 
       <p className="font-body font-normal max-w-6xl mx-auto mt-16 text-xs text-ink-dim flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span>&copy; {new Date().getFullYear()} SOPAN TEAM. Semua hak dilindungi.</span>
+        <span>&copy; {new Date().getFullYear()} Melvoc. Semua hak dilindungi.</span>
         <a href="/privasi" className="hover:text-ink-muted transition-colors">
           Kebijakan Privasi
         </a>
