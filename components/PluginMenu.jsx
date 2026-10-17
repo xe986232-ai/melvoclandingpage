@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -33,6 +32,8 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
   const free = isFreeInstall(plugin);   // gratis tapi harus di-install dulu (VocalF)
   const paid = !plugin.default && !free;
   const next = encodeURIComponent("/plugin/" + plugin.id);
+  const loginHref = "/masuk?next=" + next;   // semua aksi plugin (Install / Buy / Tebus) wajib masuk dulu: belum masuk -> langsung ke halaman masuk
+  const appHref = FULL_APP_URL || "/#download";
 
   const close = useCallback(() => setOpen(false), []);
   useOutsideClick(wrap, close);
@@ -71,19 +72,26 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
 
   function install() {
     setErr("");
-    if (!signedIn) { setOpen(false); router.push("/masuk?next=" + next); return; }
+    if (!signedIn) { setOpen(false); router.push(loginHref); return; }
     startInstall(async () => {
       const res = await installPlugin(plugin.id);
       if (res?.ok) { setOpen(false); router.refresh(); return; }
-      if (res?.needLogin) { setOpen(false); return router.push("/masuk?next=" + next); }
+      if (res?.needLogin) { setOpen(false); return router.push(loginHref); }
       setErr(res?.error || "Gagal meng-install plugin.");
     });
   }
 
   function pick(which) {
     setOpen(false);
-    if (!signedIn) { router.push("/masuk?next=" + next); return; }
+    if (!signedIn) { router.push(loginHref); return; }
     setDialog(which);
+  }
+
+  // Install Plugin untuk plugin bawaan: belum masuk -> halaman masuk; sudah masuk -> buka aplikasi
+  function installDefault() {
+    setOpen(false);
+    if (!signedIn) { router.push(loginHref); return; }
+    if (/^https?:\/\//.test(appHref)) window.location.assign(appHref); else router.push(appHref);
   }
 
   return (
@@ -125,9 +133,9 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
             )}
             {free && err && <p role="alert" className="px-3 py-1 font-body text-xs text-rose-500">{err}</p>}
             {!paid && !free && (
-              <Link role="menuitem" href={FULL_APP_URL || "/#download"} className={item} onClick={() => setOpen(false)}>
+              <button type="button" role="menuitem" className={item} onClick={installDefault}>
                 Install Plugin
-              </Link>
+              </button>
             )}
             {paid && owned && (
               <span role="menuitem" aria-disabled="true" className={item + " cursor-default text-ink-muted hover:bg-transparent dark:hover:bg-transparent"}>
