@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import TrendingWorkCard from "./TrendingWorkCard";
 import CreatorTrendingHeading from "./CreatorTrendingHeading";
 
@@ -40,38 +39,8 @@ const DEFAULT_WORKS = [
   },
 ];
 
-async function getTrendingWorks() {
-  try {
-    // Server Component, bukan browser -- aman pakai admin client (secret
-    // key). Sama seperti pola AdminSection, ini bikin homepage nggak
-    // bergantung ke policy RLS yang bisa aja belum/salah ter-setup di
-    // project live.
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("trending_works")
-      .select("*")
-      .order("slot");
-
-    if (error || !data || data.length === 0) {
-      throw error || new Error("trending_works kosong / tidak ada data");
-    }
-
-    return data.map((row) => ({
-      slot: row.slot,
-      title: row.title,
-      subtitle: row.subtitle,
-      likes: row.likes,
-      gradient: row.gradient,
-      videoUrl: row.video_url || null,
-    }));
-  } catch (err) {
-    console.error("[CreatorTrendingSection] Gagal ambil trending_works dari Supabase:", err);
-    return DEFAULT_WORKS;
-  }
-}
-
-export default async function CreatorTrendingSection() {
-  const works = await getTrendingWorks();
+export default function CreatorTrendingSection() {
+  const works = DEFAULT_WORKS;
 
   return (
     <section id="trending-creator" className="relative py-20 sm:py-24">

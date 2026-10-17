@@ -1,4 +1,3 @@
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import { divisionShortLabel } from "@/lib/division";
 import DivisionsSectionClient from "./DivisionsSectionClient";
 
@@ -65,29 +64,8 @@ function fallbackAvatar(name, hexColor) {
 // ditampilkan di kartu divisi homepage. Kalau member aktif di divisi itu
 // kurang dari 3, slot sisanya diisi kartu "logo default" (bukan foto member
 // palsu) supaya tetap kelihatan penuh & rapi.
-async function getDivisionsData() {
+function getDivisionsData() {
   const byDivision = { remix: [], creator: [], leadis: [] };
-
-  try {
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("members")
-      .select("id, full_name, division, role, avatar_url")
-      .eq("status", "aktif");
-
-    if (error) throw error;
-
-    for (const m of data || []) {
-      if (byDivision[m.division]) byDivision[m.division].push(m);
-    }
-  } catch (err) {
-    console.error(
-      "[DivisionsSection] Gagal ambil data members aktif dari Supabase:",
-      err
-    );
-    // byDivision tetap array kosong per divisi -> semua kartu jatuh ke
-    // slot logo default, section tetap tampil (tidak rusak/kosong).
-  }
 
   return DIVISION_ORDER.map((slug) => {
     const meta = DIVISION_META[slug];
@@ -130,7 +108,7 @@ async function getDivisionsData() {
   });
 }
 
-export default async function DivisionsSection() {
-  const divisions = await getDivisionsData();
+export default function DivisionsSection() {
+  const divisions = getDivisionsData();
   return <DivisionsSectionClient divisions={divisions} />;
 }

@@ -1,4 +1,3 @@
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import TrendingSoundPlayer from "./TrendingSoundPlayer";
 
 // Fallback kalau tabel `trending_sounds` belum di-setup / Supabase lagi
@@ -34,39 +33,8 @@ const DEFAULT_TRACKS = [
   },
 ];
 
-async function getTrendingSounds() {
-  try {
-    // Server Component, bukan browser -- aman pakai admin client (secret
-    // key), sama seperti pola CreatorTrendingSection. Homepage jadi nggak
-    // bergantung ke policy RLS yang bisa aja belum/salah ter-setup di
-    // project live.
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("trending_sounds")
-      .select("*")
-      .order("slot");
-
-    if (error || !data || data.length === 0) {
-      throw error || new Error("trending_sounds kosong / tidak ada data");
-    }
-
-    return data.map((row) => ({
-      id: `trend-${row.slot}`,
-      title: row.title,
-      creator: row.creator || "",
-      src: row.audio_url || "",
-      durationFallback: 0,
-      cover: row.cover_url || "",
-      panelColor: row.panel_color || "#111827",
-    }));
-  } catch (err) {
-    console.error("[TrendingSoundSection] Gagal ambil trending_sounds dari Supabase:", err);
-    return DEFAULT_TRACKS;
-  }
-}
-
-export default async function TrendingSoundSection() {
-  const tracks = await getTrendingSounds();
+export default function TrendingSoundSection() {
+  const tracks = DEFAULT_TRACKS;
 
   // TrendingSoundPlayer ("use client") yang render <section>, heading, dan
   // seluruh stage 3D interaktif -- di sini cuma tanggung jawab ambil data

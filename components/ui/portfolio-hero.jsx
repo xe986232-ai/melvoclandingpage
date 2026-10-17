@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { createPublicSupabaseClient } from "@/lib/supabase/client";
 import { DEFAULT_HERO_TEXT_EFFECT } from "@/lib/hero-text-effects";
 
 /**
@@ -569,30 +568,7 @@ export default function PortfolioHero({
   // aman dipakai sambil nunggu data ke-fetch / kalau gagal ambil, jadi
   // tampilan situs yang sudah live tidak berubah sampai admin sengaja
   // ganti pilihannya.
-  const [textEffect, setTextEffect] = useState(DEFAULT_HERO_TEXT_EFFECT);
-
-  useEffect(() => {
-    let active = true;
-    const supabase = createPublicSupabaseClient();
-
-    supabase
-      .from("site_settings")
-      .select("hero_text_effect")
-      .eq("id", 1)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (!active) return;
-        if (error) {
-          console.error("[PortfolioHero] Gagal ambil hero_text_effect:", error);
-          return;
-        }
-        if (data?.hero_text_effect) setTextEffect(data.hero_text_effect);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const textEffect = DEFAULT_HERO_TEXT_EFFECT;
 
   // Trigger bareng buat effect "sequential" -- satu observer buat
   // area nama (atas + bawah), dan satu timer global (useSequentialWalk)

@@ -1,8 +1,6 @@
 import Image from "next/image";
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 
-// Fallback kalau Supabase belum di-setup / lagi error / foto belum diupload,
-// biar halaman tetap tampil bagus.
+// Data statis admin divisi.
 const DEFAULT_ADMINS = [
   {
     slug: "remix",
@@ -30,44 +28,8 @@ const DEFAULT_ADMINS = [
   },
 ];
 
-async function getDivisionAdmins() {
-  try {
-    // Pakai admin client (secret key, server-only) buat baca data ini, BUKAN
-    // client publik/browser. Data ini memang ditampilkan ke publik, tapi
-    // dibaca dari Server Component (bukan browser), jadi aman -- dan
-    // dengan begini pembacaan tidak lagi bergantung pada policy RLS di
-    // Supabase yang bisa saja belum/salah ter-setup di project live.
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("division_admins")
-      .select("*")
-      .order("slug");
-
-    if (error || !data || data.length === 0) {
-      throw error || new Error("division_admins kosong / tidak ada data");
-    }
-
-    // pakai foto default kalau admin belum pernah upload foto
-    return data.map((admin) => {
-      const fallback = DEFAULT_ADMINS.find((d) => d.slug === admin.slug);
-      return {
-        slug: admin.slug,
-        name: admin.name,
-        role: admin.role,
-        description: admin.description,
-        image_url: admin.image_url || fallback?.image_url,
-      };
-    });
-  } catch (err) {
-    // Di-log biar kelihatan di server/Vercel logs kalau ini kejadian lagi --
-    // sebelumnya error ini ditelan diam-diam sehingga sulit didiagnosis.
-    console.error("[AdminSection] Gagal ambil division_admins dari Supabase:", err);
-    return DEFAULT_ADMINS;
-  }
-}
-
-export default async function AdminSection() {
-  const admins = await getDivisionAdmins();
+export default function AdminSection() {
+  const admins = DEFAULT_ADMINS;
 
   return (
     <section className="bg-base py-16 sm:py-24">

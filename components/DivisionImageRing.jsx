@@ -1,4 +1,3 @@
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import { divisionLabel } from "@/lib/division";
 import DivisionImageRingClient from "./DivisionImageRingClient";
 
@@ -40,61 +39,8 @@ function buildPlaceholderSlides(count) {
 // bukan foto placeholder Unsplash lagi.
 const FALLBACK_SLIDES = buildPlaceholderSlides(MIN_SLOT_COUNT);
 
-// Ambil SEMUA member berstatus "aktif" dari database (bukan cuma sampel
-// beberapa) -- jumlah kartu ASLI di ring mengikuti persis jumlah baris
-// yang balik dari query ini. Sisanya (kalau kurang dari MIN_SLOT_COUNT)
-// diisi kartu logo default lewat buildPlaceholderSlides di atas.
-async function getMemberSlides() {
-  try {
-    // Sama seperti AdminSection & halaman /anggota: dibaca dari Server
-    // Component pakai admin client, bukan dari browser, jadi tetap aman
-    // meskipun tabel `members` tidak punya policy publik.
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("members")
-      .select("id, full_name, division, avatar_url")
-      .eq("status", "aktif")
-      .order("joined_at", { ascending: true });
-
-    if (error) throw error;
-    if (!data || data.length === 0) return { slides: FALLBACK_SLIDES, activeCount: 0 };
-
-    const memberSlides = data.map((m) => {
-      const colors = DIVISION_COLORS[m.division] || DEFAULT_COLORS;
-      return {
-        id: m.id,
-        isPlaceholder: false,
-        name: m.full_name,
-        division: divisionLabel(m.division),
-        // Kalau member belum upload foto profil, tetap tampilkan sesuatu
-        // yang masuk akal (inisial nama) daripada gambar rusak/kosong.
-        avatarUrl:
-          m.avatar_url ||
-          `https://placehold.co/500x700/${colors.from.replace("#", "")}/white?text=${encodeURIComponent(
-            m.full_name?.charAt(0) || "?"
-          )}`,
-        from: colors.from,
-        to: colors.to,
-      };
-    });
-
-    const shortfall = MIN_SLOT_COUNT - memberSlides.length;
-    const slides =
-      shortfall > 0
-        ? [...memberSlides, ...buildPlaceholderSlides(shortfall)]
-        : memberSlides;
-
-    return { slides, activeCount: memberSlides.length };
-  } catch (err) {
-    console.error(
-      "[DivisionImageRing] Gagal ambil data members aktif dari Supabase:",
-      err
-    );
-    return { slides: FALLBACK_SLIDES, activeCount: 0 };
-  }
-}
-
-export default async function DivisionImageRing() {
-  const { slides, activeCount } = await getMemberSlides();
+export default function DivisionImageRing() {
+  const slides = FALLBACK_SLIDES;
+  const activeCount = 0;
   return <DivisionImageRingClient slides={slides} activeCount={activeCount} />;
 }

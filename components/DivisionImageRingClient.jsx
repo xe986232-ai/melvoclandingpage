@@ -2,8 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { StarButton } from "./ui/star-button";
 
 // clamp() berbasis vw supaya di layar mobile yang sempit kartu-nya ikut
 // membesar (nggak keliatan kekecilan). Preferred value 55vw dibikin lebih
@@ -168,19 +166,6 @@ export default function DivisionImageRingClient({ slides, activeCount = 0 }) {
           </div>
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex justify-center mt-8"
-        >
-          <Link href="/anggota">
-            <StarButton backgroundColor="#EC4899" lightColor="#FAFAFA">
-              Lihat Semua Member
-            </StarButton>
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
