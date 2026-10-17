@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: 11 10 16;           /* #0B0A10 */
+  --ink-muted: 91 87 104;    /* #5B5768 */
+  --ink-dim: 139 135 160;    /* #8B87A0 */
+  --base: 255 255 255;       /* #FFFFFF */
+  --base-elevated: 246 245 249; /* #F6F5F9 */
+  --base-line: 231 229 239;  /* #E7E5EF */
+
+  /* Dipakai RainbowButton (components/ui/rainbow-button.jsx) */
+  --color-1: 0 100% 63%;
+  --color-2: 270 100% 63%;
+  --color-3: 210 100% 63%;
+  --color-4: 195 100% 63%;
+  --color-5: 90 100% 63%;
+}
+
+.dark {
+  --ink: 237 236 240;        /* light text on dark bg */
+  --ink-muted: 168 165 184;
+  --ink-dim: 122 118 140;
+  --base: 11 10 18;          /* near-black surface */
+  --base-elevated: 20 19 28;
+  --base-line: 40 38 54;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--base));
+  color: rgb(var(--ink));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* View Transition support for the theme toggler */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Scoped to AnimatedThemeToggler — the toggler sets the data-attribute and
+   the variable only during a theme toggle. */
+html[data-magicui-theme-vt="active"]::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+
+::selection {
+  background-color: #B026FF;
+  color: #FFFFFF;
+}
+
+/* visible keyboard focus, kept even where hover styles are custom */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #0B0A10;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Glitch entrance untuk logo di Hero (components/ui/portfolio-hero.jsx).
+   Sengaja ditunda ~1s (animation-delay) supaya main belakangan, sesudah
+   teks nama "SOPAN TEAM" selesai muncul, dan durasinya dibikin longgar
+   (~1.1s) biar nggak berkesan buru-buru. */
+.hero-glitch-in {
+  animation: hero-glitch-in 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 1s;
+}
+
+@keyframes hero-glitch-in {
+  0% {
+    opacity: 0;
+    transform: translate(0, -18%) scale(0.92);
+    clip-path: inset(0 0 100% 0);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(-6px, 0) skewX(8deg);
+    clip-path: inset(8% 0 42% 0);
+  }
+  16% {
+    transform: translate(5px, 0) skewX(-6deg);
+    clip-path: inset(58% 0 4% 0);
+  }
+  24% {
+    transform: translate(-4px, 0);
+    clip-path: inset(18% 0 52% 0);
+    opacity: 0.9;
+  }
+  33% {
+    transform: translate(3px, 0) skewX(4deg);
+    clip-path: inset(0 0 28% 0);
+  }
+  42% {
+    transform: translate(-2px, 0);
+    clip-path: inset(40% 0 8% 0);
+    opacity: 1;
+  }
+  52% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+  62% {
+    opacity: 0.9;
+    transform: translate(2px, 0);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-1px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.hero-glitch-ghost {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-size: 70% 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.hero-glitch-in .hero-glitch-ghost-cyan {
+  filter: hue-rotate(180deg) saturate(3);
+  animation: hero-glitch-ghost-cyan 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 1s;
+}
+
+.hero-glitch-in .hero-glitch-ghost-magenta {
+  filter: hue-rotate(-60deg) saturate(3);
+  animation: hero-glitch-ghost-magenta 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 1s;
+}
+
+@keyframes hero-glitch-ghost-cyan {
+  0%, 48% {
+    opacity: 0.55;
+    transform: translate(5px, -3px);
+  }
+  55%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hero-glitch-ghost-magenta {
+  0%, 48% {
+    opacity: 0.55;
+    transform: translate(-5px, 3px);
+  }
+  55%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+}
+
+/* Hero title texture-fill: teks "SOPAN TEAM" pakai foto sebagai isi huruf
+   (background-clip: text), gambar diganti bergantian dengan crossfade halus. */
+.hero-texture-text {
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Reveal blur/fade cuma dipakai SEKALI di awal (huruf pertama kali masuk
+   viewport), lewat class terpisah ini -- bukan tiap kali foto gonta-ganti.
+   Dipasang manual di elemen huruf paling pertama saja. */
+.hero-texture-text-first-reveal {
+  animation: hero-texture-crossfade 1.1s ease-out;
+}
+
+/* Versi "polos" tanpa animasi blur-reveal -- dipakai effect "Foto
+   Berjalan" (SequentialTexturedText) & layer texture di "Texture +
+   Outline". Elemen ini TIDAK di-remount tiap huruf ganti aktif (cuma
+   opacity-nya yang di-transisi lewat inline style di JS), jadi nggak
+   ada flash/kedip berulang seperti .hero-texture-text di atas. */
+.hero-texture-text-plain {
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes hero-texture-crossfade {
+  from {
+    opacity: 0;
+    filter: blur(6px) saturate(0.6);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px) saturate(1);
+  }
+}
+
+/* Shimmer buat skeleton loading (mis. app/anggota/loading.js).
+   Base warna pakai token tema (base-elevated / base-line) biar otomatis
+   nyesuain light & dark mode tanpa perlu warna hardcode. */
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(var(--base-elevated));
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--base-line) / 0.6),
+    transparent
+  );
+  animation: skeleton-shimmer-move 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer-move {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
