@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-// Menyegarkan sesi login Supabase (cookie) hanya di halaman yang butuh login.
-// Halaman lain (beranda, plugin, cara pakai) tetap statis dan tidak lewat sini.
+// Menyegarkan sesi login Supabase (cookie) hanya di halaman yang membaca akun
+// (masuk, akun, plugin). Halaman lain (beranda, cara pakai) tetap statis dan tidak lewat sini.
 export async function middleware(request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key =
@@ -33,5 +33,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/masuk", "/akun"],
+  matcher: ["/masuk", "/akun", "/plugin"],
 };

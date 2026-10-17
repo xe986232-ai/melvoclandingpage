@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { PLUGINS } from "@/lib/plugins";
+import { PLUGINS, formatPrice } from "@/lib/plugins";
+import { getPlugin } from "@/app/plugin/actions";
 import { HOLO_BG } from "@/lib/holo";
 
 function Preview({ plugin }) {
@@ -34,8 +36,8 @@ function Preview({ plugin }) {
 }
 
 const TABS = [
-  { id: "default", label: "Plugin Default", match: (p) => !p.full },
-  { id: "shop", label: "Shop Plugin", match: (p) => !!p.full },
+  { id: "default", label: "Plugin Default", match: (p) => p.default },
+  { id: "shop", label: "Shop Plugin", match: (p) => !p.default },
 ];
 
 const TITLE = {
@@ -44,11 +46,69 @@ const TITLE = {
 };
 
 const INTRO = {
-  default: "plugin bawaan yang sudah ada di semua versi Melvoc, termasuk Demo.",
-  shop: "plugin tambahan yang hanya ada di Full Version.",
+  default: "plugin bawaan yang langsung aktif di akun Melvoc kamu.",
+  shop: "plugin tambahan. Klik Get plugin dan plugin langsung masuk ke akunmu, lalu bisa dipakai di DAW.",
 };
 
-export default function PluginSection() {
+// Tombol di kanan nama plugin, mengikuti status akun:
+//   default            -> "Aktif"
+//   sudah diambil      -> "Dimiliki"
+//   belum masuk        -> "Get plugin" (ke halaman masuk, lalu kembali ke sini)
+//   sudah masuk        -> "Get plugin" (aksi server, plugin masuk ke akun)
+function PluginAction({ plugin, signedIn, owned }) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState("");
+
+  if (plugin.default) {
+    return <span className="ml-auto font-body text-xs font-semibold text-ink-muted">Aktif</span>;
+  }
+  if (owned) {
+    return <span className="ml-auto font-body text-xs font-semibold text-ink">Dimiliki</span>;
+  }
+
+  const btn =
+    "rounded-full border border-base-line px-3 py-1 font-body text-xs font-semibold text-ink transition-colors hover:bg-black/[0.05] disabled:opacity-60 dark:hover:bg-white/[0.08]";
+
+  if (!signedIn) {
+    return (
+      <Link href="/masuk?next=/plugin" className={"ml-auto " + btn}>
+        Get plugin
+      </Link>
+    );
+  }
+
+  function onGet() {
+    setError("");
+    startTransition(async () => {
+      const res = await getPlugin(plugin.id);
+      if (res?.ok) {
+        router.refresh();
+        return;
+      }
+      if (res?.needLogin) {
+        router.push("/masuk?next=/plugin");
+        return;
+      }
+      setError(res?.error || "Gagal mengambil plugin. Coba lagi.");
+    });
+  }
+
+  return (
+    <span className="ml-auto flex flex-col items-end gap-1">
+      <button type="button" onClick={onGet} disabled={pending} className={btn}>
+        {pending ? "Memproses..." : "Get plugin"}
+      </button>
+      {error && (
+        <span role="alert" className="max-w-[16rem] text-right font-body text-xs text-rose-500">
+          {error}
+        </span>
+      )}
+    </span>
+  );
+}
+
+export default function PluginSection({ signedIn = false, owned = [] }) {
   const [tab, setTab] = useState("default");
   const active = TABS.find((t) => t.id === tab);
   const list = PLUGINS.filter(active.match);
@@ -117,21 +177,14 @@ export default function PluginSection() {
                   <h3 className="font-display text-xl font-extrabold leading-tight text-ink">
                     {p.name}
                   </h3>
-                  {p.full && (
-                    <span className="font-body text-sm font-semibold text-ink">(Full)</span>
-                  )}
-                  {p.full ? (
-                    <Link
-                      href="/#pricelist"
-                      className="ml-auto rounded-full border border-base-line px-3 py-1 font-body text-xs font-semibold text-ink transition-colors hover:bg-black/[0.05] dark:hover:bg-white/[0.08]"
-                    >
-                      Get plugin
-                    </Link>
-                  ) : (
-                    <span className="ml-auto font-body text-xs font-semibold text-ink-muted">
-                      Dimiliki
-                    </span>
-                  )}
+                  <span className="font-body text-sm font-semibold text-ink-muted">
+                    {formatPrice(p.price)}
+                  </span>
+                  <PluginAction
+                    plugin={p}
+                    signedIn={signedIn}
+                    owned={owned.includes(p.id)}
+                  />
                 </div>
                 <p className="mt-2 font-body text-sm leading-relaxed text-ink-muted">{p.desc}</p>
               </div>

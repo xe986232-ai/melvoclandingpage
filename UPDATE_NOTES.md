@@ -1,3 +1,37 @@
+# Update: Plugin punya nilai sendiri + "Get plugin" ke akun (terhubung ke DAW)
+
+Setiap plugin sekarang punya `id`, `price`, dan `default` di `lib/plugins.js`.
+Semua plugin **default (langsung aktif di setiap akun) kecuali AUTOTUNE**.
+AUTOTUNE baru aktif setelah pemilik akun klik **Get plugin** di `/plugin`.
+
+## Alur
+1. `/plugin` membaca akun yang masuk. Plugin default tampil "Aktif", yang sudah
+   diambil tampil "Dimiliki", sisanya tombol "Get plugin" (belum masuk -> ke `/masuk`
+   lalu kembali ke `/plugin`).
+2. Klik Get plugin -> server action `getPlugin` (`app/plugin/actions.js`) ->
+   `grantPlugin` (`lib/plugin-access.js`) menambah 1 baris aktif di tabel
+   **`plugin_licenses`** (tabel yang sama dengan DAW, `source = 'order'`).
+3. DAW membaca tabel itu lewat `/api/shop` (`owned`), jadi plugin langsung terbuka di
+   DAW untuk akun yang sama. `/akun` menampilkan daftar plugin aktif.
+
+## Yang perlu kamu lakukan
+- **Harga AUTOTUNE** masih angka sementara (`AUTOTUNE_PRICE = 25000` di `lib/plugins.js`).
+  Ganti, dan samakan dengan `PRICE` di `src/shop-page.ts` (DAW).
+- **Pembayaran belum tersambung**: Get plugin langsung mengaktifkan walau harganya > 0.
+  Titik pasang cek pembayaran ada di `grantPlugin` (`lib/plugin-access.js`).
+- Landing page dan DAW harus memakai **project Supabase yang sama** dan env
+  `SUPABASE_SERVICE_ROLE_KEY` terisi. Tidak ada migration baru (memakai
+  `plugin_licenses` yang sudah ada di `supabase/schema.sql` DAW).
+- `PRICELIST` di `lib/melvoc.js` masih menulis AUTOTUNE, BPMTUNE, PRINTER, VocalF,
+  SAMPLER, CUTE sebagai fitur Full Version. Sesuaikan teksnya dengan aturan baru.
+
+## File
+- `lib/plugins.js` (id/price/default + helper), `lib/plugin-access.js` (baru),
+  `app/plugin/actions.js` (baru), `app/plugin/page.js`, `components/PluginSection.jsx`,
+  `app/akun/page.js`, `middleware.js` (`/plugin` ikut menyegarkan sesi).
+
+---
+
 # Update: Animasi teks Hero jadi 4 pilihan, diatur dari dashboard
 
 Sebelumnya teks nama "SOPAN TEAM" di Hero homepage cuma punya 1 gaya

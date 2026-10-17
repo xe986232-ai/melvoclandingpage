@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import SignOutButton from "@/components/SignOutButton";
 import { navItems, mobileGroups } from "@/lib/nav";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { ownedPluginIds } from "@/lib/plugin-access";
+import { PLUGINS } from "@/lib/plugins";
 
 export const metadata = { title: "Akun" };
 export const dynamic = "force-dynamic";
@@ -18,6 +20,10 @@ export default async function Page() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/masuk?next=/akun");
 
+  // Plugin aktif = semua plugin default + plugin yang sudah diambil lewat Get plugin.
+  const owned = await ownedPluginIds(user.id);
+  const active = PLUGINS.filter((p) => p.default || owned.includes(p.id));
+
   return (
     <main className="relative bg-base">
       <SiteNavbar navItems={navItems} mobileGroups={mobileGroups} />
@@ -26,6 +32,20 @@ export default async function Page() {
           <h1 className="font-display text-3xl font-extrabold text-ink">Akun</h1>
           <p className="mt-2 font-body text-sm text-ink-muted">Kamu masuk sebagai</p>
           <p className="mt-1 break-all font-body text-base font-semibold text-ink">{user.email}</p>
+
+          <h2 className="mt-8 font-display text-lg font-extrabold text-ink">
+            Plugin aktif <span className="font-body text-sm font-semibold text-ink-muted">{active.length}</span>
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {active.map((p) => (
+              <li
+                key={p.id}
+                className="rounded-full border border-base-line px-3 py-1 font-body text-xs font-semibold text-ink"
+              >
+                {p.name}
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
