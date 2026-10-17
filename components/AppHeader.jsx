@@ -25,12 +25,12 @@ function ActionButton({ label, url, primary }) {
 
 export default function AppHeader() {
   return (
-    <header className="relative px-5 sm:px-10 pt-6 sm:pt-10">
+    <header className="relative px-5 sm:px-10 pt-14 pb-20 sm:pt-20 sm:pb-32">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-md sm:max-w-2xl mx-auto flex items-center gap-4 sm:gap-8 rounded-3xl border border-black/10 dark:border-white/10 bg-gradient-to-br from-fuchsia-500/10 to-violet-500/10 p-5 sm:p-8"
+        className="max-w-md sm:max-w-2xl mx-auto flex items-center gap-4 sm:gap-8"
       >
         <img
           src={APP_ICON}

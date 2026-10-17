@@ -13,8 +13,8 @@ export default function Home() {
     <main id="top" className="relative bg-base">
       <SiteNavbar navItems={navItems} mobileGroups={mobileGroups} />
       <AppHeader />
-      <AboutSection />
       <FiturSection />
+      <AboutSection />
       <AdminSection />
       <TestimonialSection />
       <FaqSection />
