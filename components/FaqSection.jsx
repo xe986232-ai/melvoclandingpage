@@ -10,25 +10,37 @@ const FAQ_ITEMS = [
     id: "1",
     title: "Apa itu Melvoc?",
     content:
-      "Melvoc adalah aplikasi DAW khusus vocal untuk membuat dan mixing vocal. Fokusnya cuma olah vocal, jadi alurnya simpel dan nggak ribet.",
+      "Melvoc adalah DAW khusus vokal berbasis web. Kamu bisa menyusun track, mengedit nada di piano roll, memasang plugin dan efek, lalu mixing, semuanya langsung di browser tanpa pasang aplikasi.",
   },
   {
     id: "2",
     title: "Apa bedanya versi Demo dan Full Version?",
     content:
-      "Demo untuk mencoba aplikasi dengan fitur terbatas. Full Version membuka semua fitur dan plugin. Keduanya berupa APK yang berbeda, jadi download sesuai kebutuhan.",
+      "Demo gratis untuk mencoba, dengan batas 4 track, timeline 32 bar, dan audio 30 detik, serta tanpa export dan simpan project. Full Version membuka semua fitur dan plugin tanpa batas, dan diakses dengan akun.",
   },
   {
     id: "3",
-    title: "Gimana cara install APK-nya?",
+    title: "Apakah perlu download APK?",
     content:
-      "Download APK dari bagian Download, buka file-nya, lalu izinkan install dari sumber luar jika diminta di Pengaturan > Keamanan. Setelah itu tekan Install.",
+      "Tidak. Melvoc berbasis website, jadi cukup dibuka lewat browser. Kalau mau terasa seperti aplikasi, install ke layar utama: di Android lewat tombol Install atau menu browser, di iPhone lewat Safari > Bagikan > Tambah ke Layar Utama, dan di komputer lewat ikon install di address bar. Di dalam Melvoc juga ada kartu Install aplikasi di Pengaturan.",
   },
   {
     id: "4",
+    title: "Bisa dipakai tanpa internet?",
+    content:
+      "Setelah pertama kali dimuat, Melvoc tersimpan di perangkatmu dan bisa dibuka tanpa internet. Khusus Full Version, perangkat perlu terhubung internet sesekali (maksimal 7 hari) untuk verifikasi lisensi.",
+  },
+  {
+    id: "5",
+    title: "Bagaimana cara mengaktifkan Full Version?",
+    content:
+      "Setelah membeli, kamu mendapat token. Buka Full Version, pilih Aktifkan token, buat akunmu, lalu masuk dengan email dan password. Satu token hanya untuk satu akun dan beberapa perangkat terbatas.",
+  },
+  {
+    id: "6",
     title: "Berapa harga Full Version dan ke mana kalau butuh bantuan?",
     content:
-      "Harga Full Version tertera di bagian Pricelist. Kalau ada kendala, hubungi tim support lewat kontak di bagian Download di bawah halaman.",
+      "Harga Full Version tertera di bagian Pricelist. Kalau ada kendala, hubungi tim support lewat kontak di bagian bawah halaman.",
   },
 ];
 
@@ -56,8 +68,7 @@ export default function FaqSection() {
           Pertanyaan yang sering ditanyain
         </h2>
         <p className="mt-3 text-ink-muted">
-          Belum nemu jawabannya? Hubungi support lewat bagian
-          &ldquo;Developer &amp; Support&rdquo;.
+          Belum nemu jawabannya? Hubungi support lewat kontak di bagian bawah halaman.
         </p>
       </motion.div>
 

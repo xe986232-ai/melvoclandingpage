@@ -30,10 +30,10 @@ export default function AboutSection() {
           className="space-y-6"
         >
           <p className="font-display font-bold text-xl sm:text-2xl leading-snug text-ink">
-            Melvoc adalah DAW khusus vocal: tempat kamu merekam, mengedit, dan mixing suara tanpa ribet.
+            Melvoc adalah DAW khusus vokal yang berjalan langsung di browser: susun track, edit nada di piano roll, pasang plugin dan efek, lalu mixing tanpa ribet.
           </p>
           <p className="font-body font-normal text-ink-muted text-base leading-relaxed">
-            Tersedia versi Demo untuk mencoba dan versi Full untuk semua fitur dan plugin. Download APK-nya di bawah, pasang, lalu mulai olah vocalmu.
+            Tidak ada file APK yang perlu diunduh. Buka Melvoc di browser HP atau komputer, lalu install ke layar utama (PWA) supaya terbuka seperti aplikasi biasa dan tetap bisa dibuka tanpa internet. Tersedia versi Demo untuk mencoba dan versi Full untuk semua fitur dan plugin.
           </p>
         </motion.div>
       </div>

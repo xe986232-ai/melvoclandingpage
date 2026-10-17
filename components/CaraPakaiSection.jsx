@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 
 // ISI: sesuaikan langkah dengan alur Melvoc yang sebenarnya.
 const STEPS = [
-  { title: "Install APK", desc: "Download APK, lalu izinkan install dari sumber luar di Pengaturan > Keamanan." },
-  { title: "Buat project", desc: "Buka Melvoc, buat project baru, dan pilih sumber rekaman." },
-  { title: "Rekam & edit", desc: "Rekam vokal, potong, dan susun beberapa track." },
-  { title: "Mixing", desc: "Pasang plugin di tiap track lalu atur sampai pas." },
-  { title: "Export", desc: "Simpan hasil akhir dan bagikan." },
+  { title: "Buka Melvoc", desc: "Buka Melvoc di browser HP atau komputer. Tidak perlu download APK." },
+  { title: "Install ke layar utama", desc: "Opsional: pasang lewat tombol Install di browser, atau dari Pengaturan > Install aplikasi, supaya terbuka seperti aplikasi biasa." },
+  { title: "Buat track", desc: "Tambahkan track (Audio clip, Supersaw, atau DERIZ), upload audiomu, lalu susun pattern di timeline dan piano roll." },
+  { title: "Mixing", desc: "Pasang plugin dan efek di tiap track, lalu atur pan dan volume sampai pas." },
+  { title: "Export & simpan", desc: "Di Full Version: export ke MP3 atau WAV dan simpan project-nya." },
 ];
 
 export default function CaraPakaiSection() {

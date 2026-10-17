@@ -1,4 +1,4 @@
-import { DEMO_APK_URL, FULL_APK_URL, FULL_PRICE } from "@/lib/melvoc";
+import { DEMO_APP_URL, FULL_APP_URL, FULL_PRICE } from "@/lib/melvoc";
 
 export default function Footer() {
   return (
@@ -8,12 +8,12 @@ export default function Footer() {
     >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10">
         <div>
-          <h3 className="font-display font-extrabold text-3xl text-ink">Download Melvoc</h3>
+          <h3 className="font-display font-extrabold text-3xl text-ink">Buka Melvoc</h3>
           <p className="font-body font-normal text-ink-muted mt-3 max-w-sm">
-            Coba dulu versi Demo, atau langsung ambil Full Version ({FULL_PRICE}).
+            Coba dulu versi Demo langsung di browser, atau ambil Full Version ({FULL_PRICE}). Tanpa download APK: buka, lalu install ke layar utama kalau mau.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            {[["Download Full", FULL_APK_URL, true], ["Download Demo", DEMO_APK_URL, false]].map(([label, url, primary]) =>
+            {[["Buka Full", FULL_APP_URL, true], ["Buka Demo", DEMO_APP_URL, false]].map(([label, url, primary]) =>
               url ? (
                 <a key={label} href={url} target="_blank" rel="noopener noreferrer"
                   className={primary

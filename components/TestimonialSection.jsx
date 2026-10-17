@@ -11,14 +11,14 @@ const TESTIMONIALS = [
     handle: "dimasardi",
     verified: true,
     date: "9 Jul 2026",
-    text: "Melvoc bikin proses mixing vocal jadi jauh lebih gampang, cukup dari HP. Hasilnya bersih dan enak didengar.",
+    text: "Melvoc bikin proses mixing vocal jadi jauh lebih gampang, cukup dari browser HP. Hasilnya bersih dan enak didengar.",
   },
   {
     name: "Sari Kusuma",
     handle: "sarikusuma",
     verified: false,
     date: "2 Jul 2026",
-    text: "Plugin vokalnya lengkap dan ringan. Rekam, koreksi nada, langsung export — nggak perlu ribet pindah-pindah aplikasi.",
+    text: "Plugin vokalnya lengkap dan ringan. Koreksi nada, mixing, langsung export — nggak perlu ribet pindah-pindah aplikasi.",
   },
   {
     name: "Bima Prasetya",

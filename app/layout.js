@@ -31,11 +31,11 @@ const accent = Space_Grotesk({
 export const metadata = {
   title: { default: "Melvoc — DAW Vocal", template: "%s | Melvoc" },
   description:
-    "Melvoc — DAW untuk olah vocal dan mixing vocal. Tersedia versi Demo dan Full Version.",
-  keywords: ["Melvoc", "DAW", "vocal", "mixing vocal", "aplikasi rekaman", "APK"],
+    "Melvoc — DAW vokal berbasis web (PWA): susun track, edit nada, dan mixing langsung dari browser. Tersedia versi Demo dan Full Version.",
+  keywords: ["Melvoc", "DAW", "DAW web", "PWA", "vocal", "mixing vocal", "piano roll"],
   openGraph: {
     title: "Melvoc — DAW Vocal",
-    description: "Rekam, edit, dan mixing vocal langsung dari HP.",
+    description: "DAW vokal berbasis web: susun track, edit, dan mixing langsung dari browser. Bisa di-install sebagai PWA.",
     siteName: "Melvoc",
     locale: "id_ID",
     type: "website",
@@ -43,7 +43,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Melvoc — DAW Vocal",
-    description: "Rekam, edit, dan mixing vocal langsung dari HP.",
+    description: "DAW vokal berbasis web: susun track, edit, dan mixing langsung dari browser. Bisa di-install sebagai PWA.",
   },
 };
 

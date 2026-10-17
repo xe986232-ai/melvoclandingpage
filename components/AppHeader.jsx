@@ -26,9 +26,9 @@ export default function AppHeader() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative font-body text-sm font-medium text-[#111] sm:text-base"
+        className="relative font-body text-sm font-medium text-[#111] sm:text-[1rem]"
       >
-        DAW Vocal untuk Android
+        DAW Vocal berbasis web · bisa di-install (PWA)
       </motion.p>
 
       {/* tengah */}
@@ -48,8 +48,8 @@ export default function AppHeader() {
         <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-[#111] sm:text-6xl">
           {APP_NAME}
         </h1>
-        <p className="mt-3 max-w-xs font-body text-sm text-[#555] sm:max-w-sm sm:text-base">
-          Rekam, edit, dan mix vokalmu langsung dari HP.
+        <p className="mt-3 max-w-xs font-body text-sm text-[#555] sm:max-w-sm sm:text-[1rem]">
+          Susun track, edit nada, dan mixing vokalmu langsung dari browser. Install ke layar utama kapan saja.
         </p>
       </motion.div>
 
