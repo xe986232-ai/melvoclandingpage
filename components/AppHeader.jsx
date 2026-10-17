@@ -3,29 +3,23 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { APP_NAME, APP_ICON } from "@/lib/melvoc";
+import { HOLO_BG } from "@/lib/holo";
 
 // Header satu layar penuh: teks di atas, icon + nama di tengah, ajakan
 // scroll di bawah. Tinggi = layar dikurangi navbar sticky (~4rem) supaya
 // isinya benar-benar di tengah layar yang terlihat.
 export default function AppHeader() {
   return (
-    <header className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-between overflow-hidden px-5 pb-6 pt-8 sm:px-10 sm:pb-8 sm:pt-12">
-      {/* cahaya lembut di belakang icon */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl dark:opacity-30 sm:h-[620px] sm:w-[620px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(168,85,247,0.55) 0%, rgba(217,70,239,0.25) 45%, rgba(0,0,0,0) 70%)",
-        }}
-      />
-
+    <header
+      className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-between overflow-hidden px-5 pb-6 pt-8 sm:px-10 sm:pb-8 sm:pt-12"
+      style={HOLO_BG}
+    >
       {/* atas */}
       <motion.p
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative font-body text-sm font-medium text-ink sm:text-base"
+        className="relative font-body text-sm font-medium text-[#111] sm:text-base"
       >
         DAW Vocal untuk Android
       </motion.p>
@@ -44,10 +38,10 @@ export default function AppHeader() {
           height={176}
           className="h-32 w-32 shrink-0 sm:h-44 sm:w-44"
         />
-        <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-ink sm:text-6xl">
+        <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-[#111] sm:text-6xl">
           {APP_NAME}
         </h1>
-        <p className="mt-3 max-w-xs font-body text-sm text-ink-muted sm:max-w-sm sm:text-base">
+        <p className="mt-3 max-w-xs font-body text-sm text-[#555] sm:max-w-sm sm:text-base">
           Rekam, edit, dan mix vokalmu langsung dari HP.
         </p>
       </motion.div>
@@ -59,7 +53,7 @@ export default function AppHeader() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.5 }}
-        className="relative flex flex-col items-center gap-1 font-body text-xs font-medium uppercase tracking-[0.2em] text-ink-muted hover:text-ink"
+        className="relative flex flex-col items-center gap-1 font-body text-xs font-medium uppercase tracking-[0.2em] text-[#555] hover:text-[#111]"
       >
         Scroll ke bawah
         <motion.span

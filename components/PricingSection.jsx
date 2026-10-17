@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Check, X, Phone, ArrowRight } from "lucide-react";
 import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
+import { HOLO_BG } from "@/lib/holo";
 
 // Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
 // selalu sama persis, baik di mode terang maupun gelap.
@@ -131,18 +132,7 @@ export default function PricingSection() {
         {/* panel gradasi holografik */}
         <div
           className="relative mt-3 overflow-hidden rounded-[30px] px-6 py-7 text-center"
-          style={{
-            backgroundColor: "#e9eeff",
-            backgroundImage: [
-              "radial-gradient(ellipse 45% 55% at 12% 8%, #c6a6ff 0%, rgba(198,166,255,0) 70%)",
-              "radial-gradient(ellipse 40% 50% at 4% 48%, #fff29a 0%, rgba(255,242,154,0) 70%)",
-              "radial-gradient(ellipse 40% 55% at 38% 70%, #ffb6e4 0%, rgba(255,182,228,0) 70%)",
-              "radial-gradient(ellipse 35% 55% at 70% 30%, #ffd1ee 0%, rgba(255,209,238,0) 70%)",
-              "radial-gradient(ellipse 40% 60% at 98% 95%, #86aaff 0%, rgba(134,170,255,0) 70%)",
-              "radial-gradient(ellipse 45% 50% at 62% 100%, #bfe6ff 0%, rgba(191,230,255,0) 70%)",
-            ].join(","),
-            boxShadow: "inset 0 0 40px rgba(255,255,255,0.55)",
-          }}
+          style={{ ...HOLO_BG, boxShadow: "inset 0 0 40px rgba(255,255,255,0.55)" }}
         >
           <div className="mx-auto flex w-fit items-center">
             <img
