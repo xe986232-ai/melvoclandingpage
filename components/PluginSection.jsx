@@ -7,12 +7,12 @@ import { HOLO_BG } from "@/lib/holo";
 function Preview({ plugin }) {
   if (plugin.image) {
     return (
-      <div className="flex aspect-[5/4] items-center justify-center overflow-hidden rounded-2xl bg-black/[0.04] p-4 dark:bg-white/[0.06]">
+      <div className="flex aspect-[5/4] items-center justify-center">
         <img
           src={plugin.image}
           alt={`Tampilan plugin ${plugin.name}`}
           loading="lazy"
-          className="max-h-full max-w-full rounded-lg object-contain"
+          className="max-h-full max-w-full rounded-xl object-contain"
         />
       </div>
     );
@@ -48,7 +48,7 @@ export default function PluginSection() {
           <h2 className="mt-4 font-display text-3xl font-extrabold text-ink sm:text-5xl">
             Plugin bawaan Melvoc
           </h2>
-          <p className="mx-auto mt-4 max-w-xl font-body text-sm text-ink-muted sm:text-base">
+          <p className="mx-auto mt-4 max-w-xl font-body text-sm text-ink-muted sm:text-[1rem]">
             {PLUGINS.length} plugin untuk vokal, instrumen, dan produksi. Plugin bertanda
             <span className="mx-1.5 rounded-full bg-fuchsia-500/10 px-2 py-0.5 text-xs font-semibold text-fuchsia-700 dark:text-fuchsia-300">
               Full
@@ -57,7 +57,7 @@ export default function PluginSection() {
           </p>
         </motion.div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {PLUGINS.map((p, i) => (
             <motion.article
               key={p.name}
@@ -65,10 +65,10 @@ export default function PluginSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.06 }}
-              className="flex flex-col rounded-3xl border border-base-line bg-base-elevated p-3 sm:p-4"
+              className="flex flex-col"
             >
               <Preview plugin={p} />
-              <div className="px-1.5 pb-2 pt-4">
+              <div className="pt-4">
                 <div className="flex items-center gap-2.5">
                   <h3 className="font-display text-xl font-extrabold leading-tight text-ink">
                     {p.name}
