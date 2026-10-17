@@ -5,8 +5,6 @@ import { Menu, X, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { DEFAULT_LOGO_STYLE, DEFAULT_LOGO_SHAPE } from "@/lib/logo-styles";
-import LogoMark from "@/components/ui/logo-mark";
 import AnnouncementBanner from "@/components/ui/announcement-banner";
 
 export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
@@ -19,8 +17,6 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
 
   // Tampilan statis: logo, banner, dan status rekrutmen memakai nilai tetap
   // (tidak ada koneksi ke database).
-  const logoStyleId = DEFAULT_LOGO_STYLE;
-  const logoShapeId = DEFAULT_LOGO_SHAPE;
   const banner = { enabled: false, text: "", link: "" };
 
   useEffect(() => {
@@ -67,9 +63,8 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
 
-        <a href="/" className="flex items-center gap-2.5">
-  <LogoMark styleId={logoStyleId} shape={logoShapeId} size={34} className="shrink-0" />
-  <span className="font-body font-semibold text-ink text-xs whitespace-nowrap">
+        <a href="/" className="flex items-center">
+  <span className="font-display font-extrabold text-ink text-xl sm:text-2xl leading-none whitespace-nowrap">
     Melvoc
   </span>
 </a>

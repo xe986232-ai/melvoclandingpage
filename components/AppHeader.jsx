@@ -25,7 +25,7 @@ export default function AppHeader() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-700 dark:text-violet-300 sm:text-xs"
+        className="relative font-body text-sm font-medium text-ink sm:text-base"
       >
         DAW Vocal untuk Android
       </motion.p>

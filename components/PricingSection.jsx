@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Phone, ArrowRight, Sparkles } from "lucide-react";
+import { Check, Phone, ArrowRight } from "lucide-react";
 import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
 
 // Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
@@ -9,30 +9,6 @@ import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
 
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E\")";
-
-function PlanIcon({ type }) {
-  if (type === "orb") {
-    return (
-      <span
-        aria-hidden
-        className="block h-9 w-9 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 50%, #2f6bff 0 22%, #8f7bff 42%, #ff8ab5 66%, #ffd9a0 86%, rgba(255,255,255,0) 100%)",
-          filter: "blur(0.4px)",
-        }}
-      />
-    );
-  }
-  return (
-    <span
-      aria-hidden
-      className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-b from-[#6b6b6b] to-[#3a3a3a] shadow-inner"
-    >
-      <span className="block h-3.5 w-3.5 rounded-full bg-white ring-[3px] ring-[#2b2b2b]/60" />
-    </span>
-  );
-}
 
 function PillButton({ href, children, arrow }) {
   const external = !!href;
@@ -63,17 +39,7 @@ function PlanCard({ plan }) {
         plan.popular ? "bg-white shadow-[0_6px_24px_rgba(0,0,0,0.06)]" : "bg-transparent"
       }`}
     >
-      <div className="flex items-start justify-between">
-        <PlanIcon type={plan.icon} />
-        {plan.popular && (
-          <span className="inline-flex items-center gap-1 rounded-md border border-[#e3e3e8] bg-white px-2 py-1 text-[10px] font-medium text-[#222]">
-            <Sparkles className="h-3 w-3" />
-            Terlaris
-          </span>
-        )}
-      </div>
-
-      <h3 className="mt-5 font-display text-[15px] font-medium text-[#1a1a1a]">{plan.name}</h3>
+      <h3 className="font-display text-[15px] font-medium text-[#1a1a1a]">{plan.name}</h3>
       <p className="mt-0.5 font-body text-[12px] text-[#8b8b92]">{plan.tagline}</p>
 
       <p className="mt-5 flex items-baseline gap-1.5">
@@ -132,17 +98,7 @@ export default function PricingSection() {
         transition={{ duration: 0.6 }}
         className="relative mx-auto max-w-3xl rounded-[34px] bg-white px-4 py-10 sm:rounded-[40px] sm:px-12 sm:py-14"
       >
-        <div className="flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#f1f1f3] px-2.5 py-1 font-body text-[9px] font-medium uppercase tracking-wide text-[#777]">
-            001
-            <span className="flex items-center gap-1 text-[#222]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#222]" />
-              Pricelist
-            </span>
-          </span>
-        </div>
-
-        <h2 className="mt-4 text-center font-display text-[30px] font-medium leading-[1.1] tracking-tight text-[#111] sm:text-[44px]">
+        <h2 className="text-center font-display text-[30px] font-medium leading-[1.1] tracking-tight text-[#111] sm:text-[44px]">
           Dibuat untuk Setiap Tahap
         </h2>
         <p className="mx-auto mt-4 max-w-md text-center font-body text-[12px] text-[#6f6f76] sm:text-[13px]">
