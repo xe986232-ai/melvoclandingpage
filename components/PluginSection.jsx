@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { PLUGINS } from "@/lib/plugins";
 import { HOLO_BG } from "@/lib/holo";
@@ -50,9 +51,7 @@ export default function PluginSection() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-sm text-ink-muted sm:text-[1rem]">
             {PLUGINS.length} plugin untuk vokal, instrumen, dan produksi. Plugin bertanda
-            <span className="mx-1.5 rounded-full bg-fuchsia-500/10 px-2 py-0.5 text-xs font-semibold text-fuchsia-700 dark:text-fuchsia-300">
-              Full
-            </span>
+            <span className="mx-1.5 font-semibold text-ink">(Full)</span>
             hanya ada di Full Version.
           </p>
         </motion.div>
@@ -74,8 +73,18 @@ export default function PluginSection() {
                     {p.name}
                   </h3>
                   {p.full && (
-                    <span className="rounded-full bg-fuchsia-500/10 px-2 py-0.5 font-body text-[11px] font-semibold text-fuchsia-700 dark:text-fuchsia-300">
-                      Full
+                    <span className="font-body text-sm font-semibold text-ink">(Full)</span>
+                  )}
+                  {p.full ? (
+                    <Link
+                      href="/#pricelist"
+                      className="ml-auto rounded-full border border-base-line px-3 py-1 font-body text-xs font-semibold text-ink transition-colors hover:bg-black/[0.05] dark:hover:bg-white/[0.08]"
+                    >
+                      Get plugin
+                    </Link>
+                  ) : (
+                    <span className="ml-auto font-body text-xs font-semibold text-ink-muted">
+                      Dimiliki
                     </span>
                   )}
                 </div>
