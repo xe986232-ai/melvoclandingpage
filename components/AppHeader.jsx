@@ -42,7 +42,7 @@ export default function AppHeader() {
           alt={`Icon aplikasi ${APP_NAME}`}
           width={176}
           height={176}
-          className="h-32 w-32 shrink-0 drop-shadow-xl sm:h-44 sm:w-44"
+          className="h-32 w-32 shrink-0 sm:h-44 sm:w-44"
         />
         <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-ink sm:text-6xl">
           {APP_NAME}

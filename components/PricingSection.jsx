@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Phone, ArrowRight } from "lucide-react";
+import { Check, X, Phone, ArrowRight } from "lucide-react";
 import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
 
 // Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
@@ -53,7 +53,7 @@ function PlanCard({ plan }) {
       <hr className="my-5 border-t border-[#e6e6ea]" />
 
       <p className="font-body text-[11px] font-semibold text-[#1a1a1a]">{plan.includedLabel}</p>
-      <ul className="mt-3 flex-1 space-y-2">
+      <ul className="mt-3 space-y-2">
         {plan.features.map((f) => (
           <li key={f} className="flex items-center gap-2 font-body text-[11.5px] text-[#333]">
             <Check className="h-3 w-3 shrink-0 text-[#333]" strokeWidth={2.5} />
@@ -62,7 +62,21 @@ function PlanCard({ plan }) {
         ))}
       </ul>
 
-      <div className="mt-7">
+      {plan.missing?.length > 0 && (
+        <>
+          <p className="mt-5 font-body text-[11px] font-semibold text-[#1a1a1a]">{plan.missingLabel}</p>
+          <ul className="mt-3 space-y-2">
+            {plan.missing.map((f) => (
+              <li key={f} className="flex items-center gap-2 font-body text-[11.5px] text-[#8b8b92]">
+                <X className="h-3 w-3 shrink-0 text-[#b4b4ba]" strokeWidth={2.5} />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <div className="mt-auto pt-7">
         <PillButton href={plan.url}>{plan.cta}</PillButton>
       </div>
     </div>
