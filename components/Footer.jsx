@@ -1,7 +1,4 @@
-// ISI: link APK (Google Drive / MediaFire / GitHub Releases), harga, dan kontak.
-const DEMO_APK_URL = "";
-const FULL_APK_URL = "";
-const FULL_PRICE = "ISI: Rp 00.000";
+import { DEMO_APK_URL, FULL_APK_URL, FULL_PRICE } from "@/lib/melvoc";
 
 export default function Footer() {
   return (
