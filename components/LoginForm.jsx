@@ -41,7 +41,7 @@ export default function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const [mode, setMode] = useState("otp"); // "otp" | "password"
+  const [mode, setMode] = useState("password"); // "otp" | "password"
   const [step, setStep] = useState("email"); // khusus mode otp: "email" | "code"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -195,6 +195,9 @@ export default function LoginForm() {
           <button type="button" onClick={() => switchMode("otp")} className={linkBtn}>
             Lupa password? Masuk dengan kode email
           </button>
+          <p className="mt-1 text-xs text-ink-dim">
+            Kode hanya sampai kalau emailnya asli dan bisa menerima pesan.
+          </p>
         </div>
       </form>
     );
