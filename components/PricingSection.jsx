@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, X, Phone, ArrowRight } from "lucide-react";
 import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
 import { HOLO_BG } from "@/lib/holo";
+import BuyFullDialog from "@/components/BuyFullDialog";
 
 // Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
 // selalu sama persis, baik di mode terang maupun gelap.
@@ -11,29 +13,46 @@ import { HOLO_BG } from "@/lib/holo";
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E\")";
 
-function PillButton({ href, children, arrow }) {
-  const external = !!href;
-  return (
-    <a
-      href={external ? href : "#download"}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-black px-6 text-[13px] font-medium text-white transition active:scale-95 hover:opacity-90"
-      style={{
-        boxShadow:
-          "inset 0 0 0 1px rgba(125,135,255,0.55), 0 0 14px rgba(110,130,255,0.28), inset 0 -6px 10px rgba(110,120,255,0.18)",
-      }}
-    >
+const PILL_CLASS =
+  "inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-black px-6 text-[13px] font-medium text-white transition active:scale-95 hover:opacity-90";
+const PILL_STYLE = {
+  boxShadow:
+    "inset 0 0 0 1px rgba(125,135,255,0.55), 0 0 14px rgba(110,130,255,0.28), inset 0 -6px 10px rgba(110,120,255,0.18)",
+};
+
+// onClick diisi -> tombol (membuka dialog); kalau tidak -> tautan (href kosong = scroll ke #download)
+function PillButton({ href, children, arrow, onClick }) {
+  const inner = (
+    <>
       {children}
       {arrow && (
         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15">
           <ArrowRight className="h-3 w-3" />
         </span>
       )}
+    </>
+  );
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} aria-haspopup="dialog" className={PILL_CLASS} style={PILL_STYLE}>
+        {inner}
+      </button>
+    );
+  }
+  const external = !!href;
+  return (
+    <a
+      href={external ? href : "#download"}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={PILL_CLASS}
+      style={PILL_STYLE}
+    >
+      {inner}
     </a>
   );
 }
 
-function PlanCard({ plan }) {
+function PlanCard({ plan, onBuy }) {
   return (
     <div
       className={`relative flex flex-col rounded-[26px] p-5 sm:p-6 ${
@@ -78,13 +97,14 @@ function PlanCard({ plan }) {
       )}
 
       <div className="mt-auto pt-7">
-        <PillButton href={plan.url}>{plan.cta}</PillButton>
+        <PillButton href={plan.url} onClick={plan.action === "buy" ? onBuy : undefined}>{plan.cta}</PillButton>
       </div>
     </div>
   );
 }
 
 export default function PricingSection() {
+  const [buyOpen, setBuyOpen] = useState(false);
   return (
     <section
       id="pricelist"
@@ -124,7 +144,7 @@ export default function PricingSection() {
         <div className="mt-10 rounded-[30px] bg-[#f1f1f1] p-2 sm:mt-12">
           <div className="grid gap-2 sm:grid-cols-2">
             {PRICELIST.map((plan) => (
-              <PlanCard key={plan.name} plan={plan} />
+              <PlanCard key={plan.name} plan={plan} onBuy={() => setBuyOpen(true)} />
             ))}
           </div>
         </div>
@@ -155,6 +175,8 @@ export default function PricingSection() {
           </div>
         </div>
       </motion.div>
+
+      <BuyFullDialog open={buyOpen} onClose={() => setBuyOpen(false)} />
     </section>
   );
 }
