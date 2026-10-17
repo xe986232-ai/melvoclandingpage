@@ -67,7 +67,7 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
 
-        <a href="#top" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5">
   <LogoMark styleId={logoStyleId} shape={logoShapeId} size={34} className="shrink-0" />
   <span className="font-body font-semibold text-ink text-xs whitespace-nowrap">
     Melvoc

@@ -39,10 +39,10 @@ export default function Footer() {
               Menu
             </span>
             <ul className="font-body font-normal mt-4 space-y-2 text-ink-muted text-sm">
-              <li><a href="#fitur" className="hover:text-ink transition-colors">Fitur</a></li>
-              <li><a href="#plugin" className="hover:text-ink transition-colors">Plugin</a></li>
-              <li><a href="#cara-pakai" className="hover:text-ink transition-colors">Cara Pakai</a></li>
-              <li><a href="#faq" className="hover:text-ink transition-colors">FAQ</a></li>
+              <li><a href="/#fitur" className="hover:text-ink transition-colors">Fitur</a></li>
+              <li><a href="/plugin" className="hover:text-ink transition-colors">Plugin</a></li>
+              <li><a href="/cara-pakai" className="hover:text-ink transition-colors">Cara Pakai</a></li>
+              <li><a href="/#faq" className="hover:text-ink transition-colors">FAQ</a></li>
             </ul>
           </div>
           <div>
