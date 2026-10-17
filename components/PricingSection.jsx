@@ -6,6 +6,7 @@ import { Check, X, Phone, ArrowRight } from "lucide-react";
 import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
 import { HOLO_BG } from "@/lib/holo";
 import BuyFullDialog from "@/components/BuyFullDialog";
+import AdminChoiceDialog from "@/components/AdminChoiceDialog";
 
 // Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
 // selalu sama persis, baik di mode terang maupun gelap.
@@ -105,6 +106,7 @@ function PlanCard({ plan, onBuy }) {
 
 export default function PricingSection() {
   const [buyOpen, setBuyOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   return (
     <section
       id="pricelist"
@@ -169,7 +171,7 @@ export default function PricingSection() {
           <h3 className="mt-4 font-display text-[16px] font-medium text-[#1a1a1a]">{CONSULT.title}</h3>
           <p className="mt-1 font-body text-[11px] text-[#6a6a78]">{CONSULT.subtitle}</p>
           <div className="mx-auto mt-4 w-fit">
-            <PillButton href={CONSULT.url} arrow>
+            <PillButton onClick={() => setAskOpen(true)} arrow>
               {CONSULT.cta}
             </PillButton>
           </div>
@@ -177,6 +179,7 @@ export default function PricingSection() {
       </motion.div>
 
       <BuyFullDialog open={buyOpen} onClose={() => setBuyOpen(false)} />
+      <AdminChoiceDialog open={askOpen} onClose={() => setAskOpen(false)} />
     </section>
   );
 }

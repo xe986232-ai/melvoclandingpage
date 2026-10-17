@@ -1,4 +1,4 @@
-import { DEMO_APP_URL, FULL_APP_URL, FULL_PRICE } from "@/lib/melvoc";
+import { TIKTOK_URL } from "@/lib/melvoc";
 
 export default function Footer() {
   return (
@@ -6,30 +6,7 @@ export default function Footer() {
       id="download"
       className="relative px-6 sm:px-10 py-20 border-t border-black/10 dark:border-white/10"
     >
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10">
-        <div>
-          <h3 className="font-display font-extrabold text-3xl text-ink">Buka Melvoc</h3>
-          <p className="font-body font-normal text-ink-muted mt-3 max-w-sm">
-            Coba dulu versi Demo langsung di browser, atau ambil Full Version ({FULL_PRICE}). Tanpa download APK: buka, lalu install ke layar utama kalau mau.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {[["Buka Full", FULL_APP_URL, true], ["Buka Demo", DEMO_APP_URL, false]].map(([label, url, primary]) =>
-              url ? (
-                <a key={label} href={url} target="_blank" rel="noopener noreferrer"
-                  className={primary
-                    ? "inline-block px-6 py-3 rounded-full bg-ink-solid text-white dark:bg-white dark:text-ink-solid text-sm font-medium hover:opacity-90 transition-opacity"
-                    : "inline-block px-6 py-3 rounded-full border border-black/15 dark:border-white/20 text-ink text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors"}>
-                  {label}
-                </a>
-              ) : (
-                <span key={label} aria-disabled="true" className="inline-block px-6 py-3 rounded-full bg-black/10 dark:bg-white/10 text-ink-muted text-sm font-medium cursor-not-allowed select-none">
-                  {label} · Segera hadir
-                </span>
-              )
-            )}
-          </div>
-        </div>
-
+      <div className="max-w-6xl mx-auto flex">
         <div className="flex gap-12">
           <div>
             <span className="font-body font-semibold text-xs tracking-[0.3em] uppercase text-ink-dim">
@@ -48,18 +25,8 @@ export default function Footer() {
             </span>
             <ul className="font-body font-normal mt-4 space-y-2 text-ink-muted text-sm">
               <li>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">
+                <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">
                   TikTok
-                </a>
-              </li>
-              <li>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">
-                  YouTube
                 </a>
               </li>
             </ul>
