@@ -1,4 +1,4 @@
-# SOPAN TEAM — Landing Page
+# SOPAN TEAM — Landing Page 
 
 Landing page komunitas SOPAN TEAM dengan tiga divisi: **Remix**, **Creator**, dan **Leadis**.
 Dibangun pakai Next.js (App Router), Tailwind CSS, dan Framer Motion.
