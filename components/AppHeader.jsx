@@ -37,7 +37,7 @@ export default function AppHeader() {
           alt={`Icon aplikasi ${APP_NAME}`}
           width={160}
           height={160}
-          className="h-24 w-24 sm:h-40 sm:w-40 shrink-0 rounded-[24%] shadow-lg"
+          className="h-24 w-24 sm:h-40 sm:w-40 shrink-0 drop-shadow-lg"
         />
 
         <div className="min-w-0 flex-1">
