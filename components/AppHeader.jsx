@@ -1,13 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { APP_NAME, APP_ICON } from "@/lib/melvoc";
 
-// Header: cuma icon + nama aplikasi. Harga & tombol Buy/Demo ada di
-// section Pricelist (components/PricingSection.jsx).
+// Header satu layar penuh: teks di atas, icon + nama di tengah, ajakan
+// scroll di bawah. Tinggi = layar dikurangi navbar sticky (~4rem) supaya
+// isinya benar-benar di tengah layar yang terlihat.
 export default function AppHeader() {
   return (
-    <header className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-5 pb-10 pt-24 sm:px-10">
+    <header className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-between overflow-hidden px-5 pb-6 pt-8 sm:px-10 sm:pb-8 sm:pt-12">
       {/* cahaya lembut di belakang icon */}
       <div
         aria-hidden
@@ -18,11 +20,22 @@ export default function AppHeader() {
         }}
       />
 
+      {/* atas */}
+      <motion.p
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-700 dark:text-violet-300 sm:text-xs"
+      >
+        DAW Vocal untuk Android
+      </motion.p>
+
+      {/* tengah */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative mx-auto flex max-w-md flex-col items-center text-center"
+        className="relative flex max-w-md flex-col items-center text-center"
       >
         <img
           src={APP_ICON}
@@ -34,7 +47,28 @@ export default function AppHeader() {
         <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-ink sm:text-6xl">
           {APP_NAME}
         </h1>
+        <p className="mt-3 max-w-xs font-body text-sm text-ink-muted sm:max-w-sm sm:text-base">
+          Rekam, edit, dan mix vokalmu langsung dari HP.
+        </p>
       </motion.div>
+
+      {/* bawah: ajakan scroll */}
+      <motion.a
+        href="#pricelist"
+        aria-label="Scroll ke bawah"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="relative flex flex-col items-center gap-1 font-body text-xs font-medium uppercase tracking-[0.2em] text-ink-muted hover:text-ink"
+      >
+        Scroll ke bawah
+        <motion.span
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-5 w-5" />
+        </motion.span>
+      </motion.a>
     </header>
   );
 }

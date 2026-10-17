@@ -28,7 +28,7 @@ const FAQ_ITEMS = [
     id: "4",
     title: "Berapa harga Full Version dan ke mana kalau butuh bantuan?",
     content:
-      "Harga Full Version tertera di bagian Download. Kalau ada kendala, hubungi tim support lewat kontak di bagian Developer & Support.",
+      "Harga Full Version tertera di bagian Pricelist. Kalau ada kendala, hubungi tim support lewat kontak di bagian Download di bawah halaman.",
   },
 ];
 
