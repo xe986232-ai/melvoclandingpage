@@ -14,7 +14,7 @@ export default function Page() {
         <div className="w-full max-w-sm">
           <h1 className="font-display text-3xl font-extrabold text-ink">Masuk</h1>
           <p className="mt-2 mb-8 font-body text-sm text-ink-muted">
-            Pakai akun yang sama dengan di aplikasi Melvoc.
+            Masuk memakai token lisensi Melvoc kamu, akunnya sama dengan di aplikasi.
           </p>
           <Suspense fallback={null}>
             <LoginForm />
