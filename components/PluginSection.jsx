@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PLUGINS, formatPrice } from "@/lib/plugins";
-import { getPlugin } from "@/app/plugin/actions";
 import { HOLO_BG } from "@/lib/holo";
+import PluginMenu from "@/components/PluginMenu";
 
-function Preview({ plugin }) {
+export function Preview({ plugin }) {
   if (plugin.image) {
     return (
       <div className="flex aspect-[5/4] items-center justify-center">
@@ -47,73 +46,20 @@ const TITLE = {
 
 const INTRO = {
   default: "plugin bawaan yang langsung aktif di akun Melvoc kamu.",
-  shop: "plugin tambahan. Klik Get plugin dan plugin langsung masuk ke akunmu, lalu bisa dipakai di DAW.",
+  shop: "plugin tambahan berbayar. Buka menu titik tiga, pilih Buy plugin, lalu tebus dengan token dari admin dan plugin langsung bisa dipakai di DAW.",
 };
 
-// Tombol di kanan nama plugin, mengikuti status akun:
-//   default            -> "Aktif"
-//   sudah diambil      -> "Dimiliki"
-//   belum masuk        -> "Get plugin" (ke halaman masuk, lalu kembali ke sini)
-//   sudah masuk        -> "Get plugin" (aksi server, plugin masuk ke akun)
-function PluginAction({ plugin, signedIn, owned, paidOpen }) {
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
-  const [error, setError] = useState("");
-
-  if (plugin.default) {
-    return <span className="ml-auto font-body text-xs font-semibold text-ink-muted">Aktif</span>;
-  }
-  if (owned) {
-    return <span className="ml-auto font-body text-xs font-semibold text-ink">Dimiliki</span>;
-  }
-
-  // Berbayar tapi pembayaran belum tersambung: jangan tawarkan Get plugin.
-  if (plugin.price > 0 && !paidOpen) {
-    return <span className="ml-auto font-body text-xs font-semibold text-ink-muted">Segera hadir</span>;
-  }
-
-  const btn =
-    "rounded-full border border-base-line px-3 py-1 font-body text-xs font-semibold text-ink transition-colors hover:bg-black/[0.05] disabled:opacity-60 dark:hover:bg-white/[0.08]";
-
-  if (!signedIn) {
-    return (
-      <Link href="/masuk?next=/plugin" className={"ml-auto " + btn}>
-        Get plugin
-      </Link>
-    );
-  }
-
-  function onGet() {
-    setError("");
-    startTransition(async () => {
-      const res = await getPlugin(plugin.id);
-      if (res?.ok) {
-        router.refresh();
-        return;
-      }
-      if (res?.needLogin) {
-        router.push("/masuk?next=/plugin");
-        return;
-      }
-      setError(res?.error || "Gagal mengambil plugin. Coba lagi.");
-    });
-  }
-
+// Label status di samping harga (hanya plugin berbayar yang punya status).
+export function StatusChip({ owned, pending }) {
+  if (!owned && !pending) return null;
   return (
-    <span className="ml-auto flex flex-col items-end gap-1">
-      <button type="button" onClick={onGet} disabled={pending} className={btn}>
-        {pending ? "Memproses..." : "Get plugin"}
-      </button>
-      {error && (
-        <span role="alert" className="max-w-[16rem] text-right font-body text-xs text-rose-500">
-          {error}
-        </span>
-      )}
+    <span className="rounded-full border border-base-line px-2 py-0.5 font-body text-[11px] font-semibold text-ink-muted">
+      {owned ? "Dimiliki" : "Menunggu token"}
     </span>
   );
 }
 
-export default function PluginSection({ signedIn = false, owned = [], paidOpen = false }) {
+export default function PluginSection({ signedIn = false, owned = [], pending = [] }) {
   const [tab, setTab] = useState("default");
   const active = TABS.find((t) => t.id === tab);
   const list = PLUGINS.filter(active.match);
@@ -176,20 +122,23 @@ export default function PluginSection({ signedIn = false, owned = [], paidOpen =
               transition={{ duration: 0.5, delay: (i % 3) * 0.06 }}
               className="flex flex-col"
             >
-              <Preview plugin={p} />
+              <Link href={"/plugin/" + p.id} aria-label={"Buka halaman " + p.name} className="block">
+                <Preview plugin={p} />
+              </Link>
               <div className="pt-4">
                 <div className="flex items-center gap-2.5">
                   <h3 className="font-display text-xl font-extrabold leading-tight text-ink">
-                    {p.name}
+                    <Link href={"/plugin/" + p.id} className="hover:opacity-70 transition-opacity">{p.name}</Link>
                   </h3>
                   <span className="font-body text-sm font-semibold text-ink-muted">
                     {formatPrice(p.price)}
                   </span>
-                  <PluginAction
+                  <StatusChip owned={owned.includes(p.id)} pending={pending.includes(p.id)} />
+                  <PluginMenu
                     plugin={p}
                     signedIn={signedIn}
                     owned={owned.includes(p.id)}
-                    paidOpen={paidOpen}
+                    pending={pending.includes(p.id)}
                   />
                 </div>
                 <p className="mt-2 font-body text-sm leading-relaxed text-ink-muted">{p.desc}</p>

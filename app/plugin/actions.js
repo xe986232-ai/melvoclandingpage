@@ -2,22 +2,37 @@
 
 import { revalidatePath } from "next/cache";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { grantPlugin } from "@/lib/plugin-access";
+import { orderPlugin, redeemPluginToken } from "@/lib/plugin-access";
 
-// Klik "Get plugin": plugin langsung masuk ke akun yang sedang masuk.
-export async function getPlugin(pluginId) {
+async function currentUser() {
   const supabase = createServerSupabaseClient();
-  if (!supabase) return { error: "Layanan belum dikonfigurasi. Hubungi admin." };
-
+  if (!supabase) return null;
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Masuk dulu untuk mengambil plugin.", needLogin: true };
+  return user;
+}
 
-  const res = await grantPlugin(user.id, String(pluginId ?? ""));
+// Buy plugin: pembeli sudah menekan Setuju di dialog. Membuat pesanan; tokennya diserahkan admin.
+export async function buyPlugin(pluginId) {
+  const user = await currentUser();
+  if (!user) return { error: "Masuk dulu untuk membeli plugin.", needLogin: true };
+  const res = await orderPlugin(user.id, String(pluginId ?? ""));
   if (res.error) return { error: res.error };
-
-  revalidatePath("/plugin");
-  revalidatePath("/akun");
+  revalidatePath("/plugin", "layout");
   return { ok: true };
+}
+
+// Tebus Plugin: memasukkan token plugin yang diberikan admin.
+export async function redeemPlugin(token) {
+  const user = await currentUser();
+  if (!user) return { error: "Masuk dulu untuk menebus token.", needLogin: true };
+  const res = await redeemPluginToken(user.id, token);
+  if (res.error) {
+    await new Promise((r) => setTimeout(r, 600)); // memperlambat tebak-tebakan token
+    return { error: res.error };
+  }
+  revalidatePath("/plugin", "layout");
+  revalidatePath("/akun");
+  return { ok: true, plugin: res.plugin };
 }

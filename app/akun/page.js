@@ -20,7 +20,7 @@ export default async function Page() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/masuk?next=/akun");
 
-  // Plugin aktif = semua plugin default + plugin yang sudah diambil lewat Get plugin.
+  // Plugin aktif = semua plugin default + plugin yang sudah ditebus.
   const owned = await ownedPluginIds(user.id);
   const active = PLUGINS.filter((p) => p.default || owned.includes(p.id));
 

@@ -33,5 +33,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/masuk", "/akun", "/plugin"],
+  matcher: ["/masuk", "/akun", "/plugin", "/plugin/:id"],
 };
