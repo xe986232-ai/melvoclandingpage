@@ -55,7 +55,7 @@ const INTRO = {
 //   sudah diambil      -> "Dimiliki"
 //   belum masuk        -> "Get plugin" (ke halaman masuk, lalu kembali ke sini)
 //   sudah masuk        -> "Get plugin" (aksi server, plugin masuk ke akun)
-function PluginAction({ plugin, signedIn, owned }) {
+function PluginAction({ plugin, signedIn, owned, paidOpen }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState("");
@@ -65,6 +65,11 @@ function PluginAction({ plugin, signedIn, owned }) {
   }
   if (owned) {
     return <span className="ml-auto font-body text-xs font-semibold text-ink">Dimiliki</span>;
+  }
+
+  // Berbayar tapi pembayaran belum tersambung: jangan tawarkan Get plugin.
+  if (plugin.price > 0 && !paidOpen) {
+    return <span className="ml-auto font-body text-xs font-semibold text-ink-muted">Segera hadir</span>;
   }
 
   const btn =
@@ -108,7 +113,7 @@ function PluginAction({ plugin, signedIn, owned }) {
   );
 }
 
-export default function PluginSection({ signedIn = false, owned = [] }) {
+export default function PluginSection({ signedIn = false, owned = [], paidOpen = false }) {
   const [tab, setTab] = useState("default");
   const active = TABS.find((t) => t.id === tab);
   const list = PLUGINS.filter(active.match);
@@ -184,6 +189,7 @@ export default function PluginSection({ signedIn = false, owned = [] }) {
                     plugin={p}
                     signedIn={signedIn}
                     owned={owned.includes(p.id)}
+                    paidOpen={paidOpen}
                   />
                 </div>
                 <p className="mt-2 font-body text-sm leading-relaxed text-ink-muted">{p.desc}</p>

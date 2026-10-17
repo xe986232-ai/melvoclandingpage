@@ -3,7 +3,7 @@ import PluginSection from "@/components/PluginSection";
 import Footer from "@/components/Footer";
 import { navItems, mobileGroups } from "@/lib/nav";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { ownedPluginIds } from "@/lib/plugin-access";
+import { ownedPluginIds, paidGetEnabled } from "@/lib/plugin-access";
 
 export const metadata = { title: "Plugin" };
 // Status tiap plugin (Aktif / Dimiliki / Get plugin) bergantung pada akun yang masuk.
@@ -27,7 +27,7 @@ export default async function Page() {
     <main className="relative bg-base">
       <SiteNavbar navItems={navItems} mobileGroups={mobileGroups} />
       <div className="pt-8 sm:pt-12 min-h-[70vh]">
-        <PluginSection signedIn={signedIn} owned={owned} />
+        <PluginSection signedIn={signedIn} owned={owned} paidOpen={paidGetEnabled()} />
       </div>
       <Footer />
     </main>

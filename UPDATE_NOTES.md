@@ -17,8 +17,10 @@ AUTOTUNE baru aktif setelah pemilik akun klik **Get plugin** di `/plugin`.
 ## Yang perlu kamu lakukan
 - **Harga AUTOTUNE** masih angka sementara (`AUTOTUNE_PRICE = 25000` di `lib/plugins.js`).
   Ganti, dan samakan dengan `PRICE` di `src/shop-page.ts` (DAW).
-- **Pembayaran belum tersambung**: Get plugin langsung mengaktifkan walau harganya > 0.
-  Titik pasang cek pembayaran ada di `grantPlugin` (`lib/plugin-access.js`).
+- **Pembayaran belum tersambung**: plugin berbayar (price > 0, sekarang AUTOTUNE) diblokir di
+  server (`grantPlugin`) dan tombolnya tampil "Segera hadir". Buka sementara dengan env
+  `PLUGIN_PAID_GET_ENABLED=1` (hanya untuk uji coba). Titik pasang cek pembayaran ada di
+  `lib/plugin-access.js`.
 - Landing page dan DAW harus memakai **project Supabase yang sama** dan env
   `SUPABASE_SERVICE_ROLE_KEY` terisi. Tidak ada migration baru (memakai
   `plugin_licenses` yang sudah ada di `supabase/schema.sql` DAW).
