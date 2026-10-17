@@ -1,6 +1,7 @@
 import { SiteNavbar } from "@/components/ui/site-navbar";
 import AppHeader from "@/components/AppHeader";
 import AboutSection from "@/components/AboutSection";
+import PricingSection from "@/components/PricingSection";
 import FiturSection from "@/components/FiturSection";
 import AdminSection from "@/components/AdminSection";
 import TestimonialSection from "@/components/TestimonialSection";
@@ -13,6 +14,7 @@ export default function Home() {
     <main id="top" className="relative bg-base">
       <SiteNavbar navItems={navItems} mobileGroups={mobileGroups} />
       <AppHeader />
+      <PricingSection />
       <FiturSection />
       <AboutSection />
       <AdminSection />

@@ -1,0 +1,200 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Check, Phone, ArrowRight, Sparkles } from "lucide-react";
+import { APP_NAME, APP_ICON, PRICELIST, CONSULT } from "@/lib/melvoc";
+
+// Section ini sengaja pakai warna tetap (bukan token tema) supaya tampilannya
+// selalu sama persis, baik di mode terang maupun gelap.
+
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E\")";
+
+function PlanIcon({ type }) {
+  if (type === "orb") {
+    return (
+      <span
+        aria-hidden
+        className="block h-9 w-9 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, #2f6bff 0 22%, #8f7bff 42%, #ff8ab5 66%, #ffd9a0 86%, rgba(255,255,255,0) 100%)",
+          filter: "blur(0.4px)",
+        }}
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden
+      className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-b from-[#6b6b6b] to-[#3a3a3a] shadow-inner"
+    >
+      <span className="block h-3.5 w-3.5 rounded-full bg-white ring-[3px] ring-[#2b2b2b]/60" />
+    </span>
+  );
+}
+
+function PillButton({ href, children, arrow }) {
+  const external = !!href;
+  return (
+    <a
+      href={external ? href : "#download"}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-black px-6 text-[13px] font-medium text-white transition active:scale-95 hover:opacity-90"
+      style={{
+        boxShadow:
+          "inset 0 0 0 1px rgba(125,135,255,0.55), 0 0 14px rgba(110,130,255,0.28), inset 0 -6px 10px rgba(110,120,255,0.18)",
+      }}
+    >
+      {children}
+      {arrow && (
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15">
+          <ArrowRight className="h-3 w-3" />
+        </span>
+      )}
+    </a>
+  );
+}
+
+function PlanCard({ plan }) {
+  return (
+    <div
+      className={`relative flex flex-col rounded-[26px] p-5 sm:p-6 ${
+        plan.popular ? "bg-white shadow-[0_6px_24px_rgba(0,0,0,0.06)]" : "bg-transparent"
+      }`}
+    >
+      <div className="flex items-start justify-between">
+        <PlanIcon type={plan.icon} />
+        {plan.popular && (
+          <span className="inline-flex items-center gap-1 rounded-md border border-[#e3e3e8] bg-white px-2 py-1 text-[10px] font-medium text-[#222]">
+            <Sparkles className="h-3 w-3" />
+            Terlaris
+          </span>
+        )}
+      </div>
+
+      <h3 className="mt-5 font-display text-[15px] font-medium text-[#1a1a1a]">{plan.name}</h3>
+      <p className="mt-0.5 font-body text-[12px] text-[#8b8b92]">{plan.tagline}</p>
+
+      <p className="mt-5 flex items-baseline gap-1.5">
+        <span className="font-display text-[38px] font-medium leading-none tracking-tight text-[#111]">
+          {plan.price}
+          {plan.priceSub && <span className="text-[#c4c4c9]">{plan.priceSub}</span>}
+        </span>
+        <span className="font-body text-[12px] text-[#555]">{plan.suffix}</span>
+      </p>
+
+      <hr className="my-5 border-t border-[#e6e6ea]" />
+
+      <p className="font-body text-[11px] font-semibold text-[#1a1a1a]">{plan.includedLabel}</p>
+      <ul className="mt-3 flex-1 space-y-2">
+        {plan.features.map((f) => (
+          <li key={f} className="flex items-center gap-2 font-body text-[11.5px] text-[#333]">
+            <Check className="h-3 w-3 shrink-0 text-[#333]" strokeWidth={2.5} />
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-7">
+        <PillButton href={plan.url}>{plan.cta}</PillButton>
+      </div>
+    </div>
+  );
+}
+
+export default function PricingSection() {
+  return (
+    <section
+      id="pricelist"
+      aria-label="Pricelist"
+      className="relative overflow-hidden bg-[#121212] px-4 py-10 sm:px-8 sm:py-16"
+    >
+      {/* tekstur grain + cahaya di pojok kanan atas, seperti referensi */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-screen"
+        style={{ backgroundImage: GRAIN }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 30% at 100% 0%, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%)",
+        }}
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6 }}
+        className="relative mx-auto max-w-3xl rounded-[34px] bg-white px-4 py-10 sm:rounded-[40px] sm:px-12 sm:py-14"
+      >
+        <div className="flex justify-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#f1f1f3] px-2.5 py-1 font-body text-[9px] font-medium uppercase tracking-wide text-[#777]">
+            001
+            <span className="flex items-center gap-1 text-[#222]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#222]" />
+              Pricelist
+            </span>
+          </span>
+        </div>
+
+        <h2 className="mt-4 text-center font-display text-[30px] font-medium leading-[1.1] tracking-tight text-[#111] sm:text-[44px]">
+          Dibuat untuk Setiap Tahap
+        </h2>
+        <p className="mx-auto mt-4 max-w-md text-center font-body text-[12px] text-[#6f6f76] sm:text-[13px]">
+          Mau coba dulu atau langsung full version, ada paket {APP_NAME} yang pas buat kamu.
+        </p>
+
+        {/* wadah abu-abu berisi 2 kartu */}
+        <div className="mt-10 rounded-[30px] bg-[#f1f1f1] p-2 sm:mt-12">
+          <div className="grid gap-2 sm:grid-cols-2">
+            {PRICELIST.map((plan) => (
+              <PlanCard key={plan.name} plan={plan} />
+            ))}
+          </div>
+        </div>
+
+        {/* panel gradasi holografik */}
+        <div
+          className="relative mt-3 overflow-hidden rounded-[30px] px-6 py-7 text-center"
+          style={{
+            backgroundColor: "#e9eeff",
+            backgroundImage: [
+              "radial-gradient(ellipse 45% 55% at 12% 8%, #c6a6ff 0%, rgba(198,166,255,0) 70%)",
+              "radial-gradient(ellipse 40% 50% at 4% 48%, #fff29a 0%, rgba(255,242,154,0) 70%)",
+              "radial-gradient(ellipse 40% 55% at 38% 70%, #ffb6e4 0%, rgba(255,182,228,0) 70%)",
+              "radial-gradient(ellipse 35% 55% at 70% 30%, #ffd1ee 0%, rgba(255,209,238,0) 70%)",
+              "radial-gradient(ellipse 40% 60% at 98% 95%, #86aaff 0%, rgba(134,170,255,0) 70%)",
+              "radial-gradient(ellipse 45% 50% at 62% 100%, #bfe6ff 0%, rgba(191,230,255,0) 70%)",
+            ].join(","),
+            boxShadow: "inset 0 0 40px rgba(255,255,255,0.55)",
+          }}
+        >
+          <div className="mx-auto flex w-fit items-center">
+            <img
+              src={APP_ICON}
+              alt=""
+              width={40}
+              height={40}
+              className="relative z-10 h-10 w-10 rounded-full bg-white object-cover ring-2 ring-white/70"
+            />
+            <span className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-[#222]">
+              <Phone className="h-4 w-4" />
+            </span>
+          </div>
+          <h3 className="mt-4 font-display text-[16px] font-medium text-[#1a1a1a]">{CONSULT.title}</h3>
+          <p className="mt-1 font-body text-[11px] text-[#6a6a78]">{CONSULT.subtitle}</p>
+          <div className="mx-auto mt-4 w-fit">
+            <PillButton href={CONSULT.url} arrow>
+              {CONSULT.cta}
+            </PillButton>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
