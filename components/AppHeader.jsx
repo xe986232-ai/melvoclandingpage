@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { APP_NAME, APP_ICON, FULL_PRICE, BUY_URL, DEMO_APK_URL } from "@/lib/melvoc";
+import { APP_NAME, APP_ICON, FULL_PRICE, BUY_URL, DEMO_APK_URL, PRICELIST } from "@/lib/melvoc";
 
 // Tombol selalu tampil aktif. Kalau link belum diisi di lib/melvoc.js,
 // tombol scroll ke bagian Download di bawah.
@@ -20,6 +20,40 @@ function ActionButton({ label, url, primary }) {
     >
       {label}
     </a>
+  );
+}
+
+function PriceCard({ item }) {
+  return (
+    <div
+      className={`rounded-2xl p-4 sm:p-5 text-left ${
+        item.highlight
+          ? "border-2 border-fuchsia-500/60 bg-fuchsia-500/10 shadow-md"
+          : "border border-base-line bg-base-elevated"
+      }`}
+    >
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="font-display font-bold text-base sm:text-lg text-ink">{item.name}</h3>
+        <span
+          className={`font-display font-bold text-lg sm:text-2xl ${
+            item.highlight ? "text-fuchsia-600 dark:text-fuchsia-400" : "text-ink"
+          }`}
+        >
+          {item.price}
+        </span>
+      </div>
+      {item.note && <p className="mt-0.5 font-body text-xs text-ink-muted">{item.note}</p>}
+      {item.features?.length > 0 && (
+        <ul className="mt-3 space-y-1.5">
+          {item.features.map((f) => (
+            <li key={f} className="flex items-start gap-2 font-body text-xs sm:text-sm text-ink">
+              <span aria-hidden className="mt-0.5 text-fuchsia-500">✓</span>
+              {f}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -57,6 +91,24 @@ export default function AppHeader() {
           </div>
         </div>
       </motion.div>
+
+      <motion.section
+        id="pricelist"
+        aria-label="Pricelist"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="max-w-md sm:max-w-2xl mx-auto mt-8 sm:mt-12"
+      >
+        <h2 className="mb-3 font-display font-bold text-sm uppercase tracking-wider text-ink-muted">
+          Pricelist
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {PRICELIST.map((item) => (
+            <PriceCard key={item.name} item={item} />
+          ))}
+        </div>
+      </motion.section>
     </header>
   );
 }
