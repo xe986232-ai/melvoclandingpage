@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PLUGINS, formatPrice } from "@/lib/plugins";
+import { PLUGINS, formatPrice, inShop } from "@/lib/plugins";
 import { HOLO_BG } from "@/lib/holo";
 import PluginMenu from "@/components/PluginMenu";
 
@@ -35,8 +35,8 @@ export function Preview({ plugin }) {
 }
 
 const TABS = [
-  { id: "default", label: "Plugin Default", match: (p) => p.default },
-  { id: "shop", label: "Shop Plugin", match: (p) => !p.default },
+  { id: "default", label: "Plugin Default", match: (p) => p.default && !inShop(p) },
+  { id: "shop", label: "Shop Plugin", match: inShop },
 ];
 
 const TITLE = {
@@ -46,8 +46,22 @@ const TITLE = {
 
 const INTRO = {
   default: "plugin bawaan yang langsung aktif di akun Melvoc kamu.",
-  shop: "plugin tambahan berbayar. Buka menu titik tiga, pilih Buy plugin, lalu tebus dengan token dari admin dan plugin langsung bisa dipakai di DAW.",
+  shop: "plugin tambahan. Yang gratis langsung bisa di-install; yang berbayar dibeli lewat menu titik tiga (Buy plugin), lalu ditebus dengan token dari admin.",
 };
+
+// Harga di samping nama. Kalau ada listPrice (harga normal), dicoret dan yang berlaku tampil di sebelahnya.
+export function PriceLabel({ plugin, className = "" }) {
+  return (
+    <span className={"font-body text-sm font-semibold text-ink-muted " + className}>
+      {plugin.listPrice > 0 && (
+        <s className="mr-1.5 opacity-60" aria-label={"Harga normal " + formatPrice(plugin.listPrice)}>
+          {formatPrice(plugin.listPrice)}
+        </s>
+      )}
+      {formatPrice(plugin.price)}
+    </span>
+  );
+}
 
 // Label status di samping harga (hanya plugin berbayar yang punya status).
 export function StatusChip({ owned, pending }) {
@@ -130,9 +144,7 @@ export default function PluginSection({ signedIn = false, owned = [], pending = 
                   <h3 className="font-display text-xl font-extrabold leading-tight text-ink">
                     <Link href={"/plugin/" + p.id} className="hover:opacity-70 transition-opacity">{p.name}</Link>
                   </h3>
-                  <span className="font-body text-sm font-semibold text-ink-muted">
-                    {formatPrice(p.price)}
-                  </span>
+                  <PriceLabel plugin={p} />
                   <StatusChip owned={owned.includes(p.id)} pending={pending.includes(p.id)} />
                   <PluginMenu
                     plugin={p}
