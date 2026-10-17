@@ -36,12 +36,13 @@ export default function Footer() {
         <div className="flex gap-12">
           <div>
             <span className="font-body font-semibold text-xs tracking-[0.3em] uppercase text-ink-dim">
-              Divisi
+              Menu
             </span>
             <ul className="font-body font-normal mt-4 space-y-2 text-ink-muted text-sm">
-              <li>Remix</li>
-              <li>Creator</li>
-              <li>Leadis</li>
+              <li><a href="#fitur" className="hover:text-ink transition-colors">Fitur</a></li>
+              <li><a href="#plugin" className="hover:text-ink transition-colors">Plugin</a></li>
+              <li><a href="#cara-pakai" className="hover:text-ink transition-colors">Cara Pakai</a></li>
+              <li><a href="#faq" className="hover:text-ink transition-colors">FAQ</a></li>
             </ul>
           </div>
           <div>
@@ -71,12 +72,6 @@ export default function Footer() {
 
       <p className="font-body font-normal max-w-6xl mx-auto mt-16 text-xs text-ink-dim flex flex-wrap items-center gap-x-4 gap-y-2">
         <span>&copy; {new Date().getFullYear()} Melvoc. Semua hak dilindungi.</span>
-        <a href="/privasi" className="hover:text-ink-muted transition-colors">
-          Kebijakan Privasi
-        </a>
-        <a href="/ketentuan" className="hover:text-ink-muted transition-colors">
-          Ketentuan Layanan
-        </a>
       </p>
     </footer>
   );

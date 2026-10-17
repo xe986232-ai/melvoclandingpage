@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { CustomTweetCard } from "./ui/custom-tweet-card";
 
-// Ganti isi array ini dengan testimoni asli kamu.
+// ISI: ganti dengan testimoni pengguna asli (nama & teks di bawah masih contoh).
 // Nggak butuh internet/API — semua konten custom & statis.
 const TESTIMONIALS = [
   {
@@ -11,21 +11,21 @@ const TESTIMONIALS = [
     handle: "dimasardi",
     verified: true,
     date: "9 Jul 2026",
-    text: "Gabung ke divisi Remix di SOPAN TEAM itu keputusan terbaik tahun ini. Timnya suportif banget dan progress skill musik gue jauh lebih cepat dibanding belajar sendirian.",
+    text: "Melvoc bikin proses mixing vocal jadi jauh lebih gampang, cukup dari HP. Hasilnya bersih dan enak didengar.",
   },
   {
     name: "Sari Kusuma",
     handle: "sarikusuma",
     verified: false,
     date: "2 Jul 2026",
-    text: "Divisi Leadis ngasih ruang buat gue tampil tanpa takut dihakimi. Semua member saling dukung, jarang nemu komunitas kayak gini.",
+    text: "Plugin vokalnya lengkap dan ringan. Rekam, koreksi nada, langsung export — nggak perlu ribet pindah-pindah aplikasi.",
   },
   {
     name: "Bima Prasetya",
     handle: "bimapras",
     verified: false,
     date: "28 Jun 2026",
-    text: "Baru gabung 2 bulan di Creator, udah dapet banyak masukan soal color grading dari member senior. Belajarnya cepet karena langsung praktek bareng tim.",
+    text: "Coba versi demo dulu, ternyata cocok banget, jadi langsung beli full version. Worth it.",
   },
 ];
 
@@ -43,10 +43,10 @@ export default function TestimonialSection() {
         className="max-w-2xl mx-auto px-6 sm:px-10 mb-10 text-center"
       >
         <span className="font-body font-semibold text-sm tracking-[0.3em] uppercase text-ink-muted">
-          Kata Mereka
+          Kata Pengguna
         </span>
         <h2 className="font-display font-bold text-3xl sm:text-4xl mt-4 text-ink">
-          Yang dibicarain soal SOPAN TEAM
+          Kata pengguna soal Melvoc
         </h2>
       </motion.div>
 

@@ -1,30 +1,23 @@
 import Image from "next/image";
 
 // Data statis admin divisi.
+// ISI: nama developer & support asli, foto (image_url), dan deskripsi/kontak.
 const DEFAULT_ADMINS = [
   {
-    slug: "remix",
-    name: "Candra",
-    role: "Divisi Remix",
+    slug: "developer",
+    name: "ISI: Nama Developer",
+    role: "Developer",
     image_url:
       "https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?auto=format&fit=crop&q=80&w=1160",
-    description: "Admin Divisi Remix, mengelola karya dan koordinasi kreator remix.",
+    description: "Developer Melvoc, pembuat dan pengembang aplikasi.",
   },
   {
-    slug: "creator",
-    name: "Gatau dahh",
-    role: "Divisi Creator",
+    slug: "support",
+    name: "ISI: Nama Support",
+    role: "Support",
     image_url:
       "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=1160",
-    description: "Admin Divisi Creator, mengelola karya dan koordinasi video editor.",
-  },
-  {
-    slug: "leadis",
-    name: "Apalagi ini",
-    role: "Divisi Leadis",
-    image_url:
-      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=1160",
-    description: "Admin Divisi Leadis, mengelola karya dan koordinasi kreator konten perempuan.",
+    description: "Support Melvoc, siap bantu kalau ada kendala install atau pemakaian.",
   },
 ];
 
@@ -32,18 +25,18 @@ export default function AdminSection() {
   const admins = DEFAULT_ADMINS;
 
   return (
-    <section className="bg-base py-16 sm:py-24">
+    <section id="developer" className="bg-base py-16 sm:py-24">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-12">
           <p className="font-body font-semibold text-sm tracking-widest text-pink-500 uppercase">
             Meet The Team
           </p>
           <h2 className="font-display font-extrabold mt-2 text-3xl text-ink sm:text-4xl">
-            Admin Divisi
+            Developer &amp; Support
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
           {admins.map((admin) => (
             <a
               key={admin.slug}

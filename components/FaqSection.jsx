@@ -4,32 +4,31 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-// FAQ seputar SOPAN TEAM — edit teksnya langsung di sini kalau ada
-// pertanyaan lain yang lebih sering ditanyain calon member.
+// FAQ seputar Melvoc — edit teksnya langsung di sini.
 const FAQ_ITEMS = [
   {
     id: "1",
-    title: "Apa itu SOPAN TEAM?",
+    title: "Apa itu Melvoc?",
     content:
-      "SOPAN TEAM adalah komunitas kreator dengan tiga divisi — Remix, Creator, dan Leadis. Tempat berkumpulnya kreator remix, video editor, dan kreator konten perempuan yang mau berkembang bareng.",
+      "Melvoc adalah aplikasi DAW khusus vocal untuk membuat dan mixing vocal. Fokusnya cuma olah vocal, jadi alurnya simpel dan nggak ribet.",
   },
   {
     id: "2",
-    title: "Gimana cara gabung jadi member?",
+    title: "Apa bedanya versi Demo dan Full Version?",
     content:
-      "Tinggal klik tombol \"Gabung\" di navbar, isi form pendaftaran, pilih divisi yang paling cocok sama minat kamu, terus tunggu konfirmasi dari admin divisi terkait.",
+      "Demo untuk mencoba aplikasi dengan fitur terbatas. Full Version membuka semua fitur dan plugin. Keduanya berupa APK yang berbeda, jadi download sesuai kebutuhan.",
   },
   {
     id: "3",
-    title: "Divisi mana yang paling cocok buat aku?",
+    title: "Gimana cara install APK-nya?",
     content:
-      "Suka ngulik remix atau DJ set? Gabung Remix. Jago ngedit video/motion graphic? Gabung Creator. Kreator konten perempuan yang mau kolaborasi bareng? Gabung Leadis.",
+      "Download APK dari bagian Download, buka file-nya, lalu izinkan install dari sumber luar jika diminta di Pengaturan > Keamanan. Setelah itu tekan Install.",
   },
   {
     id: "4",
-    title: "Apakah ada syarat khusus buat bergabung?",
+    title: "Berapa harga Full Version dan ke mana kalau butuh bantuan?",
     content:
-      "Nggak ada syarat teknis yang ribet — yang penting mau belajar, aktif, dan sopan ke sesama member. Detail lengkapnya bisa dibaca di halaman Ketentuan Layanan.",
+      "Harga Full Version tertera di bagian Download. Kalau ada kendala, hubungi tim support lewat kontak di bagian Developer & Support.",
   },
 ];
 
@@ -57,8 +56,8 @@ export default function FaqSection() {
           Pertanyaan yang sering ditanyain
         </h2>
         <p className="mt-3 text-ink-muted">
-          Belum nemu jawabannya? Chat langsung admin divisi lewat bagian
-          &ldquo;Meet The Team&rdquo;.
+          Belum nemu jawabannya? Hubungi support lewat bagian
+          &ldquo;Developer &amp; Support&rdquo;.
         </p>
       </motion.div>
 

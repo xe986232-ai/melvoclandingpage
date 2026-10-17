@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
-// Kept ONLY for the "SOPAN TEAM" hero title — do not use elsewhere.
+// Font judul (display).
 const hero = Unbounded({
   subsets: ["latin"],
   weight: ["500", "700", "900"],
@@ -29,35 +29,21 @@ const accent = Space_Grotesk({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://sopan.vercel.app"),
-  title: {
-    default: "Melvoc — DAW Vocal",
-    template: "%s | Melvoc",
-  },
+  title: { default: "Melvoc — DAW Vocal", template: "%s | Melvoc" },
   description:
     "Melvoc — DAW untuk olah vocal dan mixing vocal. Tersedia versi Demo dan Full Version.",
-  keywords: [
-    "SOPAN TEAM",
-    "komunitas kreator",
-    "remix",
-    "video editor",
-    "content creator",
-    "Leadis",
-  ],
+  keywords: ["Melvoc", "DAW", "vocal", "mixing vocal", "aplikasi rekaman", "APK"],
   openGraph: {
-    title: "SOPAN TEAM",
-    description:
-      "Tiga divisi, satu wadah. Tempat berkumpulnya kreator remix, video editor, dan kreator konten perempuan yang mau berkembang bareng.",
-    url: "https://sopan.vercel.app",
-    siteName: "SOPAN TEAM",
+    title: "Melvoc — DAW Vocal",
+    description: "Rekam, edit, dan mixing vocal langsung dari HP.",
+    siteName: "Melvoc",
     locale: "id_ID",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SOPAN TEAM",
-    description:
-      "Tiga divisi, satu wadah. Tempat berkumpulnya kreator remix, video editor, dan kreator konten perempuan yang mau berkembang bareng.",
+    title: "Melvoc — DAW Vocal",
+    description: "Rekam, edit, dan mixing vocal langsung dari HP.",
   },
 };
 
