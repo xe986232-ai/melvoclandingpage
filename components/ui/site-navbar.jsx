@@ -1,11 +1,156 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Users } from "lucide-react";
+import { Menu, X, Users, ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import AnnouncementBanner from "@/components/ui/announcement-banner";
+
+const linkCls =
+  "block whitespace-nowrap rounded-lg px-3 py-2 font-body text-xs font-medium text-ink-muted transition-colors hover:bg-black/5 hover:text-ink dark:hover:bg-white/5";
+
+// Daftar menu dropdown (desktop). Item yang punya `children` membuka flyout ke kanan.
+function MenuList({ items, onNavigate }) {
+  const [openIdx, setOpenIdx] = useState(null);
+  const lastPointer = useRef("mouse");
+  return (
+    <ul className="min-w-[170px] rounded-xl border border-black/10 bg-white p-1.5 shadow-lg dark:border-white/10 dark:bg-base">
+      {items.map((c, i) =>
+        c.children ? (
+          <li
+            key={c.name}
+            className="relative"
+            onPointerEnter={(e) => e.pointerType === "mouse" && setOpenIdx(i)}
+            onPointerLeave={(e) => e.pointerType === "mouse" && setOpenIdx(null)}
+          >
+            <button
+              type="button"
+              aria-expanded={openIdx === i}
+              onPointerDown={(e) => (lastPointer.current = e.pointerType)}
+              onClick={() =>
+                setOpenIdx(lastPointer.current === "mouse" ? i : openIdx === i ? null : i)
+              }
+              className={linkCls + " flex w-full items-center justify-between gap-6 text-left"}
+            >
+              {c.name}
+              <ChevronRight size={13} />
+            </button>
+            {openIdx === i && (
+              <div className="absolute left-full top-0 pl-1.5">
+                <MenuList items={c.children} onNavigate={onNavigate} />
+              </div>
+            )}
+          </li>
+        ) : (
+          <li key={c.name}>
+            <a href={c.link} onClick={onNavigate} className={linkCls}>
+              {c.name}
+            </a>
+          </li>
+        )
+      )}
+    </ul>
+  );
+}
+
+// Item menu atas di desktop: biasa (link) atau dropdown (buka lewat hover/klik).
+function DesktopNavItem({ item }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const lastPointer = useRef("mouse");
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  if (!item.children) {
+    return (
+      <a
+        href={item.link}
+        className="font-body font-medium text-xs text-ink-muted hover:text-ink transition-colors"
+      >
+        {item.name}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onPointerEnter={(e) => e.pointerType === "mouse" && setOpen(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setOpen(false)}
+    >
+      <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onPointerDown={(e) => (lastPointer.current = e.pointerType)}
+        onClick={() => setOpen(lastPointer.current === "mouse" ? true : !open)}
+        className="flex items-center gap-1 font-body font-medium text-xs text-ink-muted hover:text-ink transition-colors"
+      >
+        {item.name}
+        <ChevronDown size={12} className={cn("transition-transform", open && "rotate-180")} />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-10 pt-3">
+          <MenuList items={item.children} onNavigate={() => setOpen(false)} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Item menu di mobile: link biasa atau accordion (bisa bertingkat).
+function MobileNavItem({ item, depth = 0, onNavigate }) {
+  const [open, setOpen] = useState(false);
+  const base =
+    depth === 0
+      ? "font-body font-semibold tracking-tight text-xl text-ink py-1.5"
+      : "font-body font-medium text-base text-ink-muted py-1.5";
+
+  if (!item.children) {
+    return (
+      <a
+        href={item.link}
+        onClick={onNavigate}
+        className={cn(base, "block transition-colors hover:text-ink-muted")}
+      >
+        {item.name}
+      </a>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className={cn(base, "flex w-full items-center justify-between text-left")}
+      >
+        {item.name}
+        <ChevronDown size={depth === 0 ? 18 : 16} className={cn("transition-transform", open && "rotate-180")} />
+      </button>
+      {open && (
+        <div className="ml-3 flex flex-col border-l border-black/10 pl-4 dark:border-white/10">
+          {item.children.map((c) => (
+            <MobileNavItem key={c.name} item={c} depth={depth + 1} onNavigate={onNavigate} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
   const [open, setOpen] = useState(false);
@@ -73,13 +218,7 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
 
         <div className="hidden sm:flex items-center gap-6">
           {navItems.map((item, idx) => (
-            <a
-              key={`nav-${idx}`}
-              href={item.link}
-              className="font-body font-medium text-xs text-ink-muted hover:text-ink transition-colors"
-            >
-              {item.name}
-            </a>
+            <DesktopNavItem key={`nav-${idx}`} item={item} />
           ))}
         </div>
 
@@ -122,14 +261,11 @@ export const SiteNavbar = ({ navItems, mobileGroups, className }) => {
                   </span>
                   <div className="flex flex-col">
                     {group.items.map((item, idx) => (
-                      <a
+                      <MobileNavItem
                         key={`mnav-${gIdx}-${idx}`}
-                        href={item.link}
-                        onClick={() => setOpen(false)}
-                        className="font-body font-semibold tracking-tight text-xl text-ink py-1.5 transition-colors hover:text-ink-muted"
-                      >
-                        {item.name}
-                      </a>
+                        item={item}
+                        onNavigate={() => setOpen(false)}
+                      />
                     ))}
                   </div>
                 </div>
