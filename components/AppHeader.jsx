@@ -61,9 +61,9 @@ export default function AppHeader() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-[4] rounded-full border border-white/40 bg-white/15 px-4 py-1.5 font-body text-sm font-medium backdrop-blur-md sm:text-[1rem]"
+        className="relative z-[4] font-body text-sm font-medium sm:text-[1rem]"
       >
-        DAW Vocal berbasis web · bisa di-install (PWA)
+        DAW Vocal Berbasis Website
       </motion.p>
 
       {/* tengah */}
