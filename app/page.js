@@ -15,9 +15,9 @@ export default function Home() {
       <SiteNavbar navItems={navItems} mobileGroups={mobileGroups} />
       <AppHeader />
       <PricingSection />
+      <ExploreSection />
       <AboutSection />
       <FeatureSection />
-      <ExploreSection />
       <TestimonialSection />
       <FaqSection />
       <Footer />
