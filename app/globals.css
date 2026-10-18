@@ -266,3 +266,55 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .holo-drift { animation: none; }
 }
+
+
+/* Header utama (components/AppHeader.jsx): 3 latar (Liquid Holo, Oil Slick,
+   Sunset Glow) berganti dengan fade halus. Palet & dasar indigo sama di ketiganya
+   supaya perpindahannya mulus; teks tetap putih. Noise statis di atas semuanya. */
+.mh-hero { --mh-dur: 2.4s; background: #241063; isolation: isolate; }
+.mh-hero::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(circle at 30% 15%, rgba(255,255,255,.22), transparent 45%);
+}
+.mh-scene { position: absolute; inset: 0; z-index: 0; opacity: 0; overflow: hidden; background: #241063; transition: opacity var(--mh-dur) ease; pointer-events: none; }
+.mh-scene.is-prev { opacity: 1; z-index: 1; }
+.mh-scene.is-on { opacity: 1; z-index: 2; }
+.mh-layers { position: absolute; inset: 0; background-repeat: no-repeat; }
+
+.mh-liquid { background-size: 160% 160%; background-position: 20% 20%, 80% 20%, 50% 80%, 20% 75%, 60% 45%; animation: mh-ld 18s ease-in-out infinite alternate;
+  background-image:
+    radial-gradient(ellipse 60% 70% at 8% 8%, #7c4dff 0%, transparent 72%),
+    radial-gradient(ellipse 55% 65% at 95% 15%, #e63ea8 0%, transparent 70%),
+    radial-gradient(ellipse 55% 65% at 50% 100%, #3b6bff 0%, transparent 72%),
+    radial-gradient(ellipse 40% 50% at 0% 80%, #ff6a5e 0%, transparent 72%),
+    radial-gradient(ellipse 30% 40% at 60% 40%, #22c7e6 0%, transparent 72%); }
+@keyframes mh-ld { to { background-position: 55% 50%, 40% 60%, 60% 40%, 45% 35%, 40% 60%; } }
+
+.mh-blob { position: absolute; border-radius: 50%; filter: blur(46px); opacity: .85; mix-blend-mode: screen;
+  background: conic-gradient(from 0deg, #7c4dff, #3b6bff, #22c7e6, #e63ea8, #ff6a5e, #ffb347, #7c4dff); }
+.mh-b1 { width: 78%; aspect-ratio: 1; left: -22%; top: -38%; animation: mh-spin 26s linear infinite; }
+.mh-b2 { width: 70%; aspect-ratio: 1; right: -24%; bottom: -40%; animation: mh-spin 32s linear infinite reverse; }
+.mh-b3 { width: 40%; aspect-ratio: 1; left: 38%; top: 24%; opacity: .5; animation: mh-spin 20s linear infinite; }
+@keyframes mh-spin { to { transform: rotate(360deg); } }
+
+.mh-sunset { background-size: 150% 150%; background-position: 20% 20%, 80% 20%, 80% 80%, 20% 80%, 50% 50%; animation: mh-cd 20s ease-in-out infinite alternate;
+  background-image:
+    radial-gradient(ellipse 60% 70% at 5% 10%, #ff6a5e 0%, transparent 72%),
+    radial-gradient(ellipse 45% 55% at 92% 8%, rgba(255,179,71,.85) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 65% at 90% 95%, #e63ea8 0%, transparent 72%),
+    radial-gradient(ellipse 55% 65% at 10% 100%, #7c4dff 0%, transparent 72%),
+    radial-gradient(ellipse 40% 50% at 50% 50%, #3b6bff 0%, transparent 72%); }
+@keyframes mh-cd { to { background-position: 55% 45%, 40% 65%, 45% 35%, 65% 30%, 50% 50%; } }
+
+.mh-noise { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+.mh-dot { width: 26px; height: 6px; border-radius: 999px; border: 0; padding: 0; cursor: pointer; background: #fff; opacity: .3; transition: opacity .4s, width .4s; }
+.mh-dot[aria-current="true"] { opacity: .95; width: 38px; }
+.mh-dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-hero { --mh-dur: .01s; }
+  .mh-liquid, .mh-sunset, .mh-blob { animation: none !important; }
+}
