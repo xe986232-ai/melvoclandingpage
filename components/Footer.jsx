@@ -16,6 +16,7 @@ export default function Footer() {
               <li><a href="/#fitur" className="hover:text-ink transition-colors">Fitur</a></li>
               <li><a href="/plugin" className="hover:text-ink transition-colors">Plugin</a></li>
               <li><a href="/cara-pakai" className="hover:text-ink transition-colors">Cara Pakai</a></li>
+              <li><a href="/tutorial" className="hover:text-ink transition-colors">Tutorial</a></li>
               <li><a href="/#faq" className="hover:text-ink transition-colors">FAQ</a></li>
             </ul>
           </div>
