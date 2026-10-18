@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generator gambar tutorial beranotasi (DERIZ, MPCS, CUTE, SAMPLER, MGCHORD, DELAY, DEESSER).
+Generator gambar tutorial beranotasi (semua 15 plugin).
 
 Jalankan dari root project:
     pip install pillow
@@ -327,5 +327,178 @@ annotate(
         dict(n=3, label="Knob Freq", box=(54, 154, 244, 322), pill=(150, 150 + 2 * 238), anchor="l"),
         dict(n=4, label="Knob Thresh", box=(266, 154, 456, 322), pill=(1020, 70), anchor="t"),
         dict(n=5, label="Knob Amount", box=(478, 154, 668, 322), pill=(1930, 150 + 2 * 238), anchor="r"),
+    ],
+)
+
+
+def mk(sc, pl, pt):
+    """Konversi koordinat screenshot asli -> koordinat kanvas hasil."""
+    return lambda x, y: (pl + x * sc, pt + y * sc)
+
+
+# ------------------------------------------------------------- SUPERSAW
+# screenshot asli 720x467 -> scale 2
+annotate(
+    "supersaw.webp",
+    "supersaw-annotated.webp",
+    scale=2,
+    pad=(300, 150, 420, 160),
+    items=[
+        dict(n=1, label="OSC", box=(284, 40, 388, 106), pill=(972, 70), anchor="t"),
+        dict(n=2, label="FILTER", box=(396, 44, 520, 90), pill=(1216, 70), anchor="t"),
+        dict(n=3, label="ENV", box=(540, 44, 622, 90), pill=(1430, 70), anchor="t"),
+        dict(n=4, label="On / Off", box=(648, 40, 686, 104), pill=(1680, 70), anchor="t"),
+        dict(n=5, label="Knob Detune", box=(78, 152, 272, 320), pill=(165, 150 + 2 * 236), anchor="l"),
+        dict(n=6, label="Knob Mix", box=(316, 152, 510, 320), pill=(1330, 1150), anchor="b", line_x=470),
+        dict(n=7, label="Slider Level", box=(565, 150, 632, 348), pill=(1950, 150 + 2 * 249), anchor="r"),
+    ],
+)
+
+# --------------------------------------------------------------- REVERB
+# screenshot asli 720x831 -> scale 1.5
+TOP_R = chain_right(["On / Off", "Layar penuh", "Menu"], right_edge=1450, y=70)
+annotate(
+    "reverb.webp",
+    "reverb-annotated.webp",
+    scale=1.5,
+    pad=(330, 150, 330, 180),
+    items=[
+        dict(n=1, label="On / Off", box=(460, 42, 496, 102), pill=TOP_R[0], anchor="t"),
+        dict(n=2, label="Layar penuh", box=(538, 56, 574, 92), pill=TOP_R[1], anchor="t"),
+        dict(n=3, label="Menu", box=(632, 58, 668, 86), pill=TOP_R[2], anchor="t"),
+        dict(n=4, label="Knob Pre", box=(50, 420, 150, 640), pill=(480, 1467), anchor="b"),
+        dict(n=5, label="Knob Size", box=(152, 420, 254, 640), pill=(634, 1537), anchor="b"),
+        dict(n=6, label="Knob Mix", box=(250, 366, 470, 700), pill=(870, 1467), anchor="b"),
+        dict(n=7, label="Knob Tone", box=(462, 420, 556, 640), pill=(1093, 1537), anchor="b"),
+        dict(n=8, label="Knob Low Cut", box=(558, 420, 668, 640), pill=(1290, 1467), anchor="b"),
+    ],
+)
+
+# ------------------------------------------------------------ EQUALIZER
+# screenshot asli 720x1100 -> scale 1.5
+mq = mk(1.5, 330, 160)
+TOP_Q = chain_right(["On / Off", "Layar penuh", "Menu"], right_edge=1380, y=70)
+annotate(
+    "equalizer.webp",
+    "equalizer-annotated.webp",
+    scale=1.5,
+    pad=(330, 160, 330, 200),
+    items=[
+        dict(n=1, label="On / Off", box=(460, 44, 496, 106), pill=TOP_Q[0], anchor="t"),
+        dict(n=2, label="Layar penuh", box=(536, 56, 576, 94), pill=TOP_Q[1], anchor="t"),
+        dict(n=3, label="Menu", box=(630, 60, 670, 86), pill=TOP_Q[2], anchor="t"),
+        dict(n=4, label="Grafik EQ", box=(44, 142, 676, 654), pill=mq(200, 580), inside=True),
+        dict(n=5, label="Titik band", box=(222, 374, 562, 426), pill=mq(390, 300), inside=True),
+        dict(n=6, label="Pilih band", box=(70, 684, 650, 768), pill=(165, 160 + 1.5 * 726), anchor="l"),
+        dict(n=7, label="Knob Freq", box=(64, 792, 222, 1034), pill=(544, 1880), anchor="b"),
+        dict(n=8, label="Knob Gain", box=(222, 792, 364, 1034), pill=(770, 1950), anchor="b"),
+        dict(n=9, label="Knob Q", box=(364, 792, 500, 1034), pill=(978, 1880), anchor="b"),
+        dict(n=10, label="Knob Output", box=(500, 792, 656, 1034), pill=(1197, 1950), anchor="b"),
+    ],
+)
+
+# --------------------------------------------------------------- FILTER
+# screenshot asli 720x467 -> scale 2
+TOP_F = chain_right(["On / Off", "Menu"], right_edge=1740, y=70)
+annotate(
+    "filter.webp",
+    "filter-annotated.webp",
+    scale=2,
+    pad=(300, 150, 420, 60),
+    items=[
+        dict(n=1, label="On / Off", box=(548, 42, 590, 104), pill=TOP_F[0], anchor="t"),
+        dict(n=2, label="Menu", box=(628, 58, 670, 84), pill=TOP_F[1], anchor="t"),
+        dict(n=3, label="Knob Cutoff", box=(122, 152, 314, 320), pill=(165, 150 + 2 * 236), anchor="l"),
+        dict(n=4, label="Knob Reso", box=(406, 152, 598, 320), pill=(1930, 150 + 2 * 236), anchor="r"),
+    ],
+)
+
+# ------------------------------------------------------------- AUTOTUNE
+# screenshot asli 1440x816 -> scale 1
+annotate(
+    "autotune.webp",
+    "autotune-annotated.webp",
+    scale=1,
+    pad=(300, 150, 360, 100),
+    items=[
+        dict(n=1, label="Preset", box=(538, 56, 902, 96), pill=(1020, 50), anchor="t"),
+        dict(n=2, label="FX Mixer", box=(932, 58, 978, 98), pill=(1180, 120), anchor="t"),
+        dict(n=3, label="A / B", box=(998, 58, 1082, 98), pill=(1340, 50), anchor="t"),
+        dict(n=4, label="Lock", box=(1104, 58, 1148, 98), pill=(1446, 120), anchor="t"),
+        dict(n=5, label="Bypass", box=(1168, 56, 1336, 98), pill=(1552, 50), anchor="t"),
+        dict(n=6, label="Settings", box=(1356, 56, 1400, 98), pill=(1700, 120), anchor="t"),
+        dict(n=7, label="Knob Amount", box=(88, 294, 302, 508), pill=(165, 150 + 401), anchor="l"),
+        dict(n=8, label="Knob Speed", box=(340, 206, 484, 350), pill=(712, 70), anchor="t"),
+        dict(n=9, label="Knob Humanize", box=(340, 452, 484, 596), pill=(175, 710), anchor="l", line_y=560),
+        dict(n=10, label="Orb kunci", box=(528, 206, 912, 592), pill=(1020, 690), inside=True),
+        dict(n=11, label="Knob Key", box=(954, 206, 1098, 350), pill=(1920, 428), anchor="r"),
+        dict(n=12, label="Knob Scale", box=(954, 452, 1098, 596), pill=(1920, 710), anchor="r", line_y=560),
+        dict(n=13, label="Knob Output", box=(1138, 294, 1352, 508), pill=(1920, 551), anchor="r"),
+        dict(n=14, label="Notes", box=(496, 640, 944, 706), pill=(820, 1036), anchor="b", line_x=520),
+    ],
+)
+
+# -------------------------------------------------------------- BPMTUNE
+# screenshot asli 720x510 -> scale 2
+annotate(
+    "bpmtune.webp",
+    "bpmtune-annotated.webp",
+    scale=2,
+    pad=(330, 150, 330, 220),
+    items=[
+        dict(n=1, label="Nama audio", box=(252, 12, 644, 58), pill=(1000, 70), anchor="t"),
+        dict(n=2, label="Tutup", box=(656, 12, 702, 58), pill=(1688, 70), anchor="t"),
+        dict(n=3, label="Tab BPM", box=(26, 84, 356, 122), pill=(165, 356), anchor="l"),
+        dict(n=4, label="Tab Tuner", box=(366, 84, 692, 122), pill=(1935, 356), anchor="r"),
+        dict(n=5, label="Drop audio", box=(24, 134, 696, 426), pill=(670, 910), inside=True),
+        dict(n=6, label="Angka BPM", box=(26, 438, 172, 492), pill=(528, 1240), anchor="b"),
+        dict(n=7, label="\u00f7 2", box=(332, 440, 390, 492), pill=(1054, 1240), anchor="b"),
+        dict(n=8, label="\u00d7 2", box=(400, 440, 458, 492), pill=(1190, 1310), anchor="b"),
+        dict(n=9, label="TAP", box=(470, 440, 536, 492), pill=(1336, 1240), anchor="b"),
+        dict(n=10, label="Play", box=(546, 440, 618, 492), pill=(1494, 1310), anchor="b"),
+        dict(n=11, label="SET", box=(630, 440, 694, 492), pill=(1654, 1240), anchor="b"),
+    ],
+)
+
+# -------------------------------------------------------------- PRINTER
+# screenshot asli 720x1159 -> scale 1.5
+mp = mk(1.5, 330, 150)
+TOP_P = chain_right(["Status", "Suara", "Tutup"], right_edge=1450, y=70)
+annotate(
+    "printer.webp",
+    "printer-annotated.webp",
+    scale=1.5,
+    pad=(330, 150, 330, 230),
+    items=[
+        dict(n=1, label="Status", box=(256, 20, 552, 70), pill=TOP_P[0], anchor="t"),
+        dict(n=2, label="Suara", box=(570, 18, 622, 70), pill=TOP_P[1], anchor="t"),
+        dict(n=3, label="Tutup", box=(638, 18, 690, 70), pill=TOP_P[2], anchor="t"),
+        dict(n=4, label="Kertas", box=(26, 100, 694, 672), pill=mp(360, 600), inside=True),
+        dict(n=5, label="Timeline", box=(30, 696, 690, 724), pill=(165, 150 + 1.5 * 710), anchor="l"),
+        dict(n=6, label="VOCAL", box=(28, 756, 134, 806), pill=(165, 150 + 1.5 * 781), anchor="l"),
+        dict(n=7, label="Volume vocal", box=(146, 760, 692, 796), pill=(1575, 150 + 1.5 * 778), anchor="r"),
+        dict(n=8, label="BPM, Grid, Key", box=(30, 854, 562, 904), pill=(175, 150 + 1.5 * 879), anchor="l"),
+        dict(n=9, label="Cetak", box=(574, 852, 690, 906), pill=(1575, 150 + 1.5 * 879), anchor="r"),
+        dict(n=10, label="REC", box=(28, 940, 244, 1008), pill=(165, 150 + 1.5 * 974), anchor="l"),
+        dict(n=11, label="PLAY", box=(254, 940, 466, 1008), pill=(870, 150 + 1.5 * 1159 + 70), anchor="b", line_x=360),
+        dict(n=12, label="PRINT", box=(476, 940, 690, 1008), pill=(1575, 150 + 1.5 * 974), anchor="r"),
+        dict(n=13, label="Tear Off", box=(28, 1026, 354, 1092), pill=(165, 150 + 1.5 * 1059), anchor="l"),
+        dict(n=14, label=".MID", box=(366, 1026, 690, 1092), pill=(1575, 150 + 1.5 * 1059), anchor="r"),
+    ],
+)
+
+# --------------------------------------------------------------- VOCALF
+# screenshot asli 534x346 -> scale 2
+annotate(
+    "vocalf.webp",
+    "vocalf-annotated.webp",
+    scale=2,
+    pad=(330, 150, 330, 60),
+    items=[
+        dict(n=1, label="Power", box=(46, 38, 76, 68), pill=(165, 256), anchor="l"),
+        dict(n=2, label="Menu", box=(468, 42, 498, 62), pill=(1296, 70), anchor="t"),
+        dict(n=3, label="Knob Mid Air", box=(40, 115, 182, 235), pill=(165, 500), anchor="l"),
+        dict(n=4, label="Knob High Air", box=(198, 115, 340, 235), pill=(864, 70), anchor="t"),
+        dict(n=5, label="Knob Trim", box=(354, 115, 496, 235), pill=(1560, 500), anchor="r"),
     ],
 )

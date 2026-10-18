@@ -158,7 +158,7 @@ export default function TutorialSection() {
       ))}
 
       <p className="px-5 pb-20 pt-4 text-center font-body text-sm text-ink-dim">
-        Tutorial plugin lainnya dan cara memakai app Melvoc segera hadir.
+        Tutorial cara memakai app Melvoc segera hadir.
       </p>
     </>
   );
