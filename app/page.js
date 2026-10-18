@@ -3,6 +3,7 @@ import AppHeader from "@/components/AppHeader";
 import AboutSection from "@/components/AboutSection";
 import FeatureSection from "@/components/FeatureSection";
 import PricingSection from "@/components/PricingSection";
+import ExploreSection from "@/components/ExploreSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
@@ -16,6 +17,7 @@ export default function Home() {
       <PricingSection />
       <AboutSection />
       <FeatureSection />
+      <ExploreSection />
       <TestimonialSection />
       <FaqSection />
       <Footer />
