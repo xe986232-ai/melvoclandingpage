@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lightbulb, PlayCircle, Sparkles } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import AnnotatedImage from "@/components/AnnotatedImage";
 import { TUTORIALS } from "@/lib/tutorials";
 
@@ -11,15 +11,6 @@ const fade = {
   viewport: { once: true, margin: "-80px" },
   transition: { duration: 0.6 },
 };
-
-// Nomor kuning, sama dengan badge di dalam gambar.
-function NumBadge({ n }) {
-  return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FFC440] font-body text-sm font-bold text-[#141004]">
-      {n}
-    </span>
-  );
-}
 
 function VideoBlock({ video, name }) {
   const frame = "relative aspect-video w-full overflow-hidden rounded-2xl border border-black/10 dark:border-white/10";
@@ -65,7 +56,7 @@ function VideoBlock({ video, name }) {
 
 function PluginTutorial({ t, index }) {
   return (
-    <section id={t.id} className="scroll-mt-24 px-5 py-14 sm:px-10 sm:py-20">
+    <section id={t.id} className="scroll-mt-24 px-5 py-12 sm:px-10 sm:py-16">
       <div className="mx-auto max-w-5xl">
         <motion.div {...fade} className="mb-8">
           <span className="font-accent text-xs font-semibold uppercase tracking-[0.3em] text-ink-dim">
@@ -85,64 +76,40 @@ function PluginTutorial({ t, index }) {
           </p>
         </motion.div>
 
-        {/* 2. Penjelasan di luar gambar (di bawahnya), dikelompokkan */}
-        <div className="mt-12 space-y-10">
-          {t.groups.map((g) => (
-            <motion.div key={g.label} {...fade}>
-              <h3 className="mb-4 font-accent text-xs font-semibold uppercase tracking-[0.25em] text-ink-dim">
-                {g.label}
-              </h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {g.parts.map((p) => (
-                  <div
-                    key={p.n}
-                    className="flex gap-3 rounded-2xl border border-base-line bg-base-elevated p-4"
-                  >
-                    <NumBadge n={p.n} />
-                    <div>
-                      <h4 className="font-display text-base font-bold text-ink">{p.title}</h4>
-                      <p className="mt-1 font-body text-sm leading-relaxed text-ink-muted">{p.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+        {/* 2. Penjelasan di bawah gambar: daftar polos */}
+        <motion.ol {...fade} className="mt-10 divide-y divide-base-line border-y border-base-line">
+          {t.parts.map((p) => (
+            <li key={p.n} className="flex items-baseline gap-3 py-2.5">
+              <span className="flex h-6 w-6 shrink-0 translate-y-0.5 items-center justify-center rounded-full bg-[#FFC440] font-body text-xs font-bold text-[#141004]">
+                {p.n}
+              </span>
+              <p className="font-body text-sm text-ink-muted sm:text-base">
+                <span className="font-semibold text-ink">{p.title}</span>
+                <span className="mx-1.5 text-ink-dim">—</span>
+                {p.desc}
+              </p>
+            </li>
           ))}
-        </div>
+        </motion.ol>
 
-        {/* 3. Langkah pemakaian */}
-        <motion.div {...fade} className="mt-14">
-          <h3 className="mb-5 font-display text-2xl font-bold text-ink">
-            Cara pakai {t.name} langkah demi langkah
-          </h3>
-          <ol className="space-y-4">
-            {t.steps.map((s, i) => (
-              <li key={s.title} className="flex gap-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-solid font-semibold text-white dark:bg-white dark:text-ink-solid">
-                  {i + 1}
-                </span>
-                <div>
-                  <h4 className="font-display text-lg font-bold text-ink">{s.title}</h4>
-                  <p className="font-body text-sm text-ink-muted">{s.desc}</p>
-                </div>
-              </li>
+        {/* 3. Langkah singkat */}
+        <motion.div {...fade} className="mt-10">
+          <h3 className="mb-3 font-display text-xl font-bold text-ink">Cara pakai</h3>
+          <ol className="list-decimal space-y-1.5 pl-5 font-body text-sm text-ink-muted marker:font-semibold marker:text-ink sm:text-base">
+            {t.steps.map((s) => (
+              <li key={s}>{s}</li>
             ))}
           </ol>
-
           {t.tip && (
-            <div className="mt-6 flex gap-3 rounded-2xl border border-[#FFC440]/40 bg-[#FFC440]/10 p-4">
-              <Lightbulb size={20} className="mt-0.5 shrink-0 text-[#C98F00] dark:text-[#FFC440]" />
-              <p className="font-body text-sm text-ink">
-                <span className="font-semibold">Tips: </span>
-                {t.tip}
-              </p>
-            </div>
+            <p className="mt-4 font-body text-sm text-ink-dim">
+              <span className="font-semibold text-ink-muted">Tips:</span> {t.tip}
+            </p>
           )}
         </motion.div>
 
         {/* 4. Video tutorial */}
-        <motion.div {...fade} className="mt-14">
-          <h3 className="mb-5 font-display text-2xl font-bold text-ink">Video tutorial {t.name}</h3>
+        <motion.div {...fade} className="mt-10">
+          <h3 className="mb-3 font-display text-xl font-bold text-ink">Video tutorial</h3>
           <VideoBlock video={t.video} name={t.name} />
         </motion.div>
       </div>
@@ -171,23 +138,15 @@ export default function TutorialSection() {
           <motion.nav
             {...fade}
             aria-label="Pilih plugin"
-            className="mt-10 grid gap-3 sm:grid-cols-2"
+            className="mt-8 flex flex-wrap justify-center gap-2"
           >
             {TUTORIALS.map((t) => (
               <a
                 key={t.id}
                 href={`#${t.id}`}
-                className="group rounded-2xl border border-base-line bg-base-elevated p-5 transition-colors hover:border-ink-dim"
+                className="rounded-full border border-base-line px-5 py-2 font-body text-sm font-semibold text-ink transition-colors hover:bg-base-elevated"
               >
-                <span className="font-accent text-xs font-semibold uppercase tracking-[0.25em] text-ink-dim">
-                  {t.tagline}
-                </span>
-                <div className="mt-1 flex items-center justify-between">
-                  <span className="font-display text-2xl font-extrabold text-ink">{t.name}</span>
-                  <span className="font-body text-sm font-medium text-ink-muted transition-transform group-hover:translate-x-1">
-                    Lihat tutorial →
-                  </span>
-                </div>
+                {t.name}
               </a>
             ))}
           </motion.nav>
@@ -198,18 +157,9 @@ export default function TutorialSection() {
         <PluginTutorial key={t.id} t={t} index={i} />
       ))}
 
-      <section className="px-5 pb-20 pt-6 sm:px-10">
-        <motion.div
-          {...fade}
-          className="mx-auto flex max-w-5xl items-start gap-3 rounded-2xl border border-dashed border-base-line p-5"
-        >
-          <Sparkles size={20} className="mt-0.5 shrink-0 text-ink-dim" />
-          <p className="font-body text-sm text-ink-muted">
-            <span className="font-semibold text-ink">Segera hadir:</span> tutorial plugin lainnya
-            (MGCHORD, Supersaw, AUTOTUNE, dan lainnya) serta tutorial cara memakai app Melvoc.
-          </p>
-        </motion.div>
-      </section>
+      <p className="px-5 pb-20 pt-4 text-center font-body text-sm text-ink-dim">
+        Tutorial plugin lainnya dan cara memakai app Melvoc segera hadir.
+      </p>
     </>
   );
 }
