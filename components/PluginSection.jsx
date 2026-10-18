@@ -46,7 +46,7 @@ const TITLE = {
 
 const INTRO = {
   default: "plugin bawaan yang langsung aktif di akun Melvoc kamu.",
-  shop: "plugin tambahan. Yang gratis langsung bisa di-install; yang berbayar dibeli lewat menu titik tiga (Buy plugin), lalu ditebus dengan token dari admin.",
+  shop: "plugin tambahan. Yang gratis langsung bisa di-install; yang berbayar dibeli lewat tombol Buy, lalu ditebus dengan token dari admin.",
 };
 
 // Harga di samping nama. Kalau ada listPrice (harga normal), dicoret dan yang berlaku tampil di sebelahnya.

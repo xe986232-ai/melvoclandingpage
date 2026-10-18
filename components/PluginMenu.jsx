@@ -1,55 +1,74 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useId, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { MoreVertical } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
-import { useOutsideClick } from "@/hooks/use-outside-click";
 import { buyPlugin, installPlugin, redeemPlugin } from "@/app/plugin/actions";
 import { buildPluginOrderUrl, formatPrice, isFreeInstall } from "@/lib/plugins";
 import { FULL_APP_URL } from "@/lib/melvoc";
 
-const item =
-  "flex w-full items-center rounded-xl px-3 py-2 text-left font-body text-sm font-semibold text-ink transition-colors hover:bg-black/[0.05] focus-visible:bg-black/[0.05] focus-visible:outline-none dark:hover:bg-white/[0.08] dark:focus-visible:bg-white/[0.08]";
 const primary =
   "inline-flex h-11 items-center justify-center rounded-full bg-ink-solid px-6 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60 dark:bg-white dark:text-ink-solid";
 const ghost =
   "inline-flex h-11 items-center justify-center rounded-full border border-base-line px-6 text-sm font-semibold text-ink transition-colors hover:bg-black/[0.05] disabled:opacity-60 dark:hover:bg-white/[0.08]";
 
-// Titik tiga di kanan nama plugin.
-//   Bawaan   : Share plugin, Install Plugin (buka DAW)
-//   Gratis-install (mis. VocalF): Share plugin, Install Plugin (aktif di akun, tanpa token)
-//   Berbayar : Share plugin, Buy plugin -> (setelah pesanan disetujui) Tebus Plugin
+// Ikon Share premium (SVG): tiga node terhubung dengan gradient stroke + kilau halus.
+function ShareIcon({ size = 18, gid }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={gid} x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#A78BFA" />
+          <stop offset="0.55" stopColor="#F472B6" />
+          <stop offset="1" stopColor="#FBBF24" />
+        </linearGradient>
+      </defs>
+      <path d="M8.6 10.9l6.8-3.8M8.6 13.1l6.8 3.8" stroke={"url(#" + gid + ")"} strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="6.5" cy="12" r="3" fill={"url(#" + gid + ")"} />
+      <circle cx="17.5" cy="6" r="3" fill={"url(#" + gid + ")"} />
+      <circle cx="17.5" cy="18" r="3" fill={"url(#" + gid + ")"} />
+      <circle cx="5.7" cy="11.1" r="0.9" fill="#fff" fillOpacity="0.55" />
+      <circle cx="16.7" cy="5.1" r="0.9" fill="#fff" fillOpacity="0.55" />
+      <circle cx="16.7" cy="17.1" r="0.9" fill="#fff" fillOpacity="0.55" />
+    </svg>
+  );
+}
+
+function CheckIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 7.5" stroke="#34D399" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const cta =
+  "inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-ink-solid px-5 font-body text-sm font-bold text-white shadow-sm transition hover:opacity-90 active:scale-[0.97] disabled:opacity-60 dark:bg-white dark:text-ink-solid";
+const ctaSoft =
+  "inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-base-line px-4 font-body text-sm font-bold text-ink transition-colors hover:bg-black/[0.05] active:scale-[0.97] dark:hover:bg-white/[0.08]";
+
+// Di kanan nama plugin: tombol Share (ikon SVG) + tombol aksi langsung (tanpa titik tiga).
+//   Bawaan   : Share, Get (buka DAW)
+//   Gratis-install (mis. VocalF): Share, Get (aktif di akun, tanpa token)
+//   Berbayar : Share, Buy -> (setelah pesanan disetujui) Tebus + Chat admin
 export default function PluginMenu({ plugin, signedIn = false, owned = false, pending = false }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const gid = "share-grad-" + useId().replace(/:/g, "");
   const [dialog, setDialog] = useState(null); // 'buy' | 'ordered' | 'redeem'
   const [copied, setCopied] = useState(false);
   const [busy, startInstall] = useTransition();
   const [err, setErr] = useState("");
-  const wrap = useRef(null);
   const free = isFreeInstall(plugin);   // gratis tapi harus di-install dulu (VocalF)
   const paid = !plugin.default && !free;
   const next = encodeURIComponent("/plugin/" + plugin.id);
-  const loginHref = "/masuk?next=" + next;   // semua aksi plugin (Install / Buy / Tebus) wajib masuk dulu: belum masuk -> langsung ke halaman masuk
+  const loginHref = "/masuk?next=" + next;   // semua aksi plugin (Get / Buy / Tebus) wajib masuk dulu: belum masuk -> langsung ke halaman masuk
   const appHref = FULL_APP_URL || "/#download";
-
-  const close = useCallback(() => setOpen(false), []);
-  useOutsideClick(wrap, close);
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
 
   async function share() {
     const url = location.origin + "/plugin/" + plugin.id;
     if (navigator.share) {
       try {
         await navigator.share({ title: plugin.name + " | Melvoc", text: plugin.desc, url });
-        setOpen(false);
         return;
       } catch (e) {
         if (e?.name === "AbortError") return; // pengguna menutup lembar bagikan
@@ -67,106 +86,81 @@ export default function PluginMenu({ plugin, signedIn = false, owned = false, pe
       ta.remove();
     }
     setCopied(true);
-    setTimeout(() => { setCopied(false); setOpen(false); }, 1400);
+    setTimeout(() => setCopied(false), 1400);
   }
 
   function install() {
     setErr("");
-    if (!signedIn) { setOpen(false); router.push(loginHref); return; }
+    if (!signedIn) { router.push(loginHref); return; }
     startInstall(async () => {
       const res = await installPlugin(plugin.id);
-      if (res?.ok) { setOpen(false); router.refresh(); return; }
-      if (res?.needLogin) { setOpen(false); return router.push(loginHref); }
+      if (res?.ok) { router.refresh(); return; }
+      if (res?.needLogin) return router.push(loginHref);
       setErr(res?.error || "Gagal meng-install plugin.");
     });
   }
 
   function pick(which) {
-    setOpen(false);
     if (!signedIn) { router.push(loginHref); return; }
     setDialog(which);
   }
 
-  // Install Plugin untuk plugin bawaan: belum masuk -> halaman masuk; sudah masuk -> buka aplikasi
+  // Get untuk plugin bawaan: belum masuk -> halaman masuk; sudah masuk -> buka aplikasi
   function installDefault() {
-    setOpen(false);
     if (!signedIn) { router.push(loginHref); return; }
     if (/^https?:\/\//.test(appHref)) window.location.assign(appHref); else router.push(appHref);
   }
 
   return (
-    <div ref={wrap} className="relative ml-auto shrink-0">
-      <button
-        type="button"
-        aria-label={"Menu " + plugin.name}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-        className="grid h-8 w-8 place-items-center rounded-full text-ink-muted transition-colors hover:bg-black/[0.06] hover:text-ink dark:hover:bg-white/[0.1]"
-      >
-        <MoreVertical size={18} />
-      </button>
+    <div className="relative ml-auto flex shrink-0 items-center gap-2">
+      <div className="relative">
+        <button
+          type="button"
+          aria-label={"Share " + plugin.name}
+          title="Share plugin"
+          onClick={share}
+          className="group relative grid h-9 w-9 place-items-center rounded-full border border-base-line bg-base-elevated shadow-sm transition-all hover:-translate-y-0.5 hover:border-transparent hover:shadow-lg hover:shadow-fuchsia-500/25 active:scale-95 before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-br before:from-violet-400/0 before:via-pink-400/0 before:to-amber-300/0 before:blur-md before:transition-all hover:before:from-violet-400/40 hover:before:via-pink-400/40 hover:before:to-amber-300/40"
+        >
+          <span className="transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6">
+            {copied ? <CheckIcon /> : <ShareIcon gid={gid} />}
+          </span>
+        </button>
+        <span
+          role="status"
+          aria-live="polite"
+          className={"pointer-events-none absolute right-0 top-full z-30 mt-1.5 whitespace-nowrap rounded-lg bg-ink-solid px-2.5 py-1 font-body text-xs font-semibold text-white shadow-lg transition-all dark:bg-white dark:text-ink-solid " + (copied ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0")}
+        >
+          Link disalin
+        </span>
+      </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            role="menu"
-            className="absolute right-0 top-full z-30 mt-1.5 w-48 origin-top-right rounded-2xl border border-base-line bg-base p-1.5 shadow-xl shadow-black/15"
-            initial={{ opacity: 0, scale: 0.95, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.97, y: -4 }}
-            transition={{ duration: 0.14 }}
+      {!paid && !free && (
+        <button type="button" className={cta} onClick={installDefault}>Get</button>
+      )}
+      {free && !owned && (
+        <button type="button" className={cta} onClick={install} disabled={busy}>
+          {busy ? "..." : "Get"}
+        </button>
+      )}
+      {paid && !owned && !pending && (
+        <button type="button" className={cta} onClick={() => pick("buy")}>Buy</button>
+      )}
+      {paid && !owned && pending && (
+        <>
+          <button type="button" className={cta} onClick={() => pick("redeem")}>Tebus</button>
+          <a
+            className={ctaSoft}
+            href={buildPluginOrderUrl(plugin)}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <button type="button" role="menuitem" className={item} onClick={share}>
-              {copied ? "Link disalin" : "Share plugin"}
-            </button>
-
-            {free && owned && (
-              <span role="menuitem" aria-disabled="true" className={item + " cursor-default text-ink-muted hover:bg-transparent dark:hover:bg-transparent"}>
-                Sudah ter-install
-              </span>
-            )}
-            {free && !owned && (
-              <button type="button" role="menuitem" className={item} onClick={install} disabled={busy}>
-                {busy ? "Meng-install..." : "Install Plugin"}
-              </button>
-            )}
-            {free && err && <p role="alert" className="px-3 py-1 font-body text-xs text-rose-500">{err}</p>}
-            {!paid && !free && (
-              <button type="button" role="menuitem" className={item} onClick={installDefault}>
-                Install Plugin
-              </button>
-            )}
-            {paid && owned && (
-              <span role="menuitem" aria-disabled="true" className={item + " cursor-default text-ink-muted hover:bg-transparent dark:hover:bg-transparent"}>
-                Sudah dimiliki
-              </span>
-            )}
-            {paid && !owned && !pending && (
-              <button type="button" role="menuitem" className={item} onClick={() => pick("buy")}>
-                Buy plugin
-              </button>
-            )}
-            {paid && !owned && pending && (
-              <>
-                <button type="button" role="menuitem" className={item} onClick={() => pick("redeem")}>
-                  Tebus Plugin
-                </button>
-                <a
-                  role="menuitem"
-                  className={item}
-                  href={buildPluginOrderUrl(plugin)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                >
-                  Chat admin (WhatsApp)
-                </a>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Chat admin
+          </a>
+        </>
+      )}
+      {free && err && (
+        <p role="alert" className="absolute right-0 top-full z-30 mt-1.5 w-56 rounded-lg border border-base-line bg-base p-2 text-right font-body text-xs text-rose-500 shadow-lg">{err}</p>
+      )}
 
       {paid && <BuyDialog plugin={plugin} open={dialog === "buy"} onClose={() => setDialog(null)} onDone={() => { setDialog("ordered"); router.refresh(); }} />}
       {paid && <OrderedDialog plugin={plugin} open={dialog === "ordered"} onClose={() => setDialog(null)} onRedeem={() => setDialog("redeem")} />}
