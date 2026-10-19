@@ -51,14 +51,15 @@ const INTRO = {
 
 // Harga di samping nama. Kalau ada listPrice (harga normal), dicoret dan yang berlaku tampil di sebelahnya.
 export function PriceLabel({ plugin, className = "" }) {
+  const promo = plugin.listPrice > 0;
   return (
-    <span className={"font-body text-sm font-semibold text-ink-muted " + className}>
-      {plugin.listPrice > 0 && (
-        <s className="mr-1.5 opacity-60" aria-label={"Harga normal " + formatPrice(plugin.listPrice)}>
+    <span className={"inline-flex flex-col items-start font-body text-sm font-semibold text-ink-muted " + (promo ? "leading-tight " : "") + className}>
+      {promo && (
+        <s className="text-[0.75em] opacity-60" aria-label={"Harga normal " + formatPrice(plugin.listPrice)}>
           {formatPrice(plugin.listPrice)}
         </s>
       )}
-      {formatPrice(plugin.price)}
+      <span>{formatPrice(plugin.price)}</span>
     </span>
   );
 }

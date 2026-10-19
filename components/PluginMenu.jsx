@@ -190,14 +190,14 @@ function BuyDialog({ plugin, open, onClose, onDone }) {
     <Modal open={open} onClose={onClose} label={"Beli " + plugin.name}>
       <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted">Buy plugin</p>
       <h2 className="mt-2 font-display text-2xl font-extrabold text-ink">{plugin.name}</h2>
-      <p className="mt-1 font-display text-3xl font-extrabold text-ink">
+      <div className="mt-1 flex flex-col items-start leading-tight">
         {plugin.listPrice > 0 && (
-          <s className="mr-2 text-xl font-semibold opacity-50" aria-label={"Harga normal " + formatPrice(plugin.listPrice)}>
+          <s className="font-display text-base font-semibold text-ink-muted opacity-60" aria-label={"Harga normal " + formatPrice(plugin.listPrice)}>
             {formatPrice(plugin.listPrice)}
           </s>
         )}
-        {formatPrice(plugin.price)}
-      </p>
+        <p className="font-display text-3xl font-extrabold text-ink">{formatPrice(plugin.price)}</p>
+      </div>
       <p className="mt-4 font-body text-sm leading-relaxed text-ink-muted">{plugin.desc}</p>
       <ul className="mt-4 space-y-1.5 border-t border-base-line pt-4 font-body text-sm text-ink-muted">
         <li>Sekali bayar, dipakai selamanya di akun ini.</li>
