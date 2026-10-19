@@ -16,7 +16,7 @@ const FAQ_ITEMS = [
     id: "2",
     title: "Apa bedanya versi Demo dan Full Version?",
     content:
-      "Demo gratis untuk mencoba, dengan batas 4 track, timeline 32 bar, dan audio 30 detik, serta tanpa export dan simpan project. Full Version membuka semua fitur dan plugin bawaan tanpa batas, dan diakses dengan akun. Plugin AUTOTUNE tidak termasuk, dibeli terpisah di halaman Plugin.",
+      "Demo gratis untuk mencoba, dengan batas 4 track, timeline 32 bar, dan audio 30 detik, serta tanpa export dan simpan project. Full Version membuka semua fitur dan plugin bawaan tanpa batas, dan diakses dengan akun. Plugin AUTOTUNE dan LIVETUNE tidak termasuk, dibeli terpisah di halaman Plugin.",
   },
   {
     id: "3",

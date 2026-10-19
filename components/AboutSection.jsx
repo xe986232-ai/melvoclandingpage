@@ -33,7 +33,7 @@ export default function AboutSection() {
             Melvoc adalah DAW khusus vokal yang berjalan langsung di browser: susun track, edit nada di piano roll, pasang plugin dan efek, lalu mixing tanpa ribet.
           </p>
           <p className="font-body font-normal text-ink-muted text-base leading-relaxed">
-            Tidak ada file APK yang perlu diunduh. Buka Melvoc di browser HP atau komputer, lalu install ke layar utama (PWA) supaya terbuka seperti aplikasi biasa dan tetap bisa dibuka tanpa internet. Tersedia versi Demo untuk mencoba dan versi Full untuk semua fitur dan plugin bawaan (AUTOTUNE dibeli terpisah).
+            Tidak ada file APK yang perlu diunduh. Buka Melvoc di browser HP atau komputer, lalu install ke layar utama (PWA) supaya terbuka seperti aplikasi biasa dan tetap bisa dibuka tanpa internet. Tersedia versi Demo untuk mencoba dan versi Full untuk semua fitur dan plugin bawaan (AUTOTUNE dan LIVETUNE dibeli terpisah).
           </p>
         </motion.div>
       </div>

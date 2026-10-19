@@ -18,7 +18,7 @@ const FEATURES = [
   },
   {
     title: "Plugin untuk vokal",
-    desc: "MPCS untuk edit pitch manual, MGCHORD untuk chord progression, plus AUTOTUNE, BPMTUNE, PRINTER, dan plugin lainnya.",
+    desc: "MPCS untuk edit pitch manual, MGCHORD untuk chord progression, plus AUTOTUNE, LIVETUNE, BPMTUNE, PRINTER, dan plugin lainnya.",
   },
   {
     title: "Efek & mastering",
